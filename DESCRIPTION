@@ -1,0 +1,32 @@
+Package: microSTASIS
+Title: Microbiota STability ASsessment via Iterative cluStering
+Version: 0.99.0
+Description: The toolkit 'µSTASIS' has been developed for the stability analysis of microbiota in a temporal framework by leveraging on iterative clustering. Concretely, the core function uses Hartigan-Wong k-means algorithm as many times as possible for stressing out paired samples from the same individuals to test if they remain together for multiple numbers of clusters over a whole data set of individuals. Moreover, the package includes multiple functions to subset samples from paired times, validate the results or visualize the output.
+Authors@R: c(
+    person(given = "Pedro",
+           family = "Sánchez-Sánchez",
+           role = c("aut", "cre"),
+           email = "bio.pedro.technology@gmail.com",
+           comment = c(ORCID = "0000-0002-4846-1813")),
+    person(given = "Alfonso",
+           family = "Benítez-Páez",
+           role = c("aut"),
+           email = "alfbenpa@gmail.com",
+           comment = c(ORCID = "0000-0001-5707-4340")))
+License: GPL-3
+Imports: 
+    BiocParallel,
+    ggplot2,
+    ggside,
+    grid,
+    SingleCellExperiment,
+    SummarizedExperiment,
+    stats,
+    stringr
+Suggests:
+    gghighlight
+biocViews: GeneticVariability, BiomedicalInformatics, Clustering, MultipleComparison, Microbiome
+BugReports: https://github.com/BiotechPedro/microSTASIS
+URL: https://doi.org/10.1093/bib/bbac055
+Encoding: UTF-8
+RoxygenNote: 7.2.1

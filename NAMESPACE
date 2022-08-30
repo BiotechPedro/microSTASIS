@@ -1,0 +1,12 @@
+
+export(mSinternalPairedTimes)
+export(pairedTimes)
+export(iterativeClustering)
+export(mSpreviz)
+export(mSscatter)
+export(mSheatmap)
+export(mSmetadataGroups)
+export(mSdynamics)
+export(iterativeClusteringCV)
+export(mSerrorCV)
+export(mSlinesCV)
