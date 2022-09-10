@@ -24,7 +24,8 @@ Imports:
     stats,
     stringr
 Suggests:
-    gghighlight
+    gghighlight,
+    TreeSummarizedExperiment
 biocViews: GeneticVariability, BiomedicalInformatics, Clustering, MultipleComparison, Microbiome
 BugReports: https://github.com/BiotechPedro/microSTASIS
 URL: https://doi.org/10.1093/bib/bbac055
