@@ -2,33 +2,31 @@
 % Please edit documentation in R/mSlinesCV.R
 \name{mSlinesCV}
 \alias{mSlinesCV}
-\title{Plot the stability values after [microSTASIS::iterativeClusteringCV()].}
+\title{Plot the stability values after \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 \usage{
 mSlinesCV(pairedTime, CVklist, k = 1L, points = TRUE, sizeLine = 0.5)
 }
 \arguments{
 \item{pairedTime}{input matrix with paired times whose stability has being assessed.}
 
-\item{CVklist}{list resulting from [microSTASIS::iterativeClusteringCV()].}
+\item{CVklist}{list resulting from \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 
-\item{k}{integer; number of individuals to subset from the data. The same as used in [microSTASIS::iterativeClusteringCV()].}
+\item{k}{integer; number of individuals to subset from the data. The same as used in \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 
-\item{points}{logical; if plotting, FALSE to only plot lines and TRUE to add points on the mS score, i.e. result from [microSTASIS::stabilitas()].}
+\item{points}{logical; if plotting, FALSE to only plot lines and TRUE to add points on the mS score, i.e. result from \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 
 \item{sizeLine}{numeric; if plotting, size of the multiple lines.}
 }
 \value{
-A line plotin the form of a [ggplot2::ggplot()] object with the values of stability for the multiple subsets and the original matrix of paired samples (points).
+A line plotin the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object with the values of stability for the multiple subsets and the original matrix of paired samples (points).
 }
 \description{
 Plot lines connecting the mS score for each subset of the original matrix of paired times.
 }
 \examples{
-\donttest{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
 cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
                                             common = "_0_", k = 2L, parallel = TRUE)
 mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_t1_t25_k2, k = 2L)
-}
 }

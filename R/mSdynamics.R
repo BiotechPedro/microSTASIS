@@ -6,6 +6,7 @@
 #' @param linetype numeric; type of line to connect the median value of paired times; 0 to avoid the line.
 #'
 #' @return A plot with as many boxes as paired times by group in the form of a [ggplot2::ggplot()] object.
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -24,10 +25,11 @@ mSdynamics <- function(results, groups, points = TRUE, linetype = 2){
                                                     each = dim(results)[1])),
                               value = unlist(results[-c(1, dim(results)[2])]))
     rownames(manual.melt) <- 1:(dim(results)[1]*(length(colnames(results)) - 2))
-    plot <- ggplot2::ggplot(manual.melt, ggplot2::aes(x = variable, y = value)) +
-      ggplot2::stat_summary(fun = stats::median, geom = "line", ggplot2::aes(group = group, color = group),
+    plot <- ggplot2::ggplot(manual.melt, ggplot2::aes(x = .data$variable, y = .data$value)) +
+      ggplot2::stat_summary(fun = stats::median, geom = "line", 
+                            ggplot2::aes(group = .data$group, color = .data$group),
                             linetype = linetype, size = 1.3) +
-      ggplot2::geom_boxplot(ggplot2::aes(fill = group), outlier.shape = NA,
+      ggplot2::geom_boxplot(ggplot2::aes(fill = .data$group), outlier.shape = NA,
                             width = 0.2, colour = "black", alpha = 0.6) +
       ggplot2::labs(x = NULL, y = "Stability") + ggplot2::theme_classic() +
       ggplot2::theme(legend.position = "top", legend.title = ggplot2::element_blank(),
@@ -37,7 +39,7 @@ mSdynamics <- function(results, groups, points = TRUE, linetype = 2){
                      axis.ticks.length.y = grid::unit(0.25, "cm"),
                      axis.ticks.length.x = grid::unit(0.25, "cm"))
     if (points) {
-      plot + ggplot2::geom_jitter(ggplot2::aes(fill = group),
+      plot + ggplot2::geom_jitter(ggplot2::aes(fill = .data$group),
                                   position = ggplot2::position_jitterdodge(jitter.width = 0.15),
                                   size = 2, pch = 21, alpha = 0.75)
     } else {plot}

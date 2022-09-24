@@ -20,7 +20,9 @@ mSmetadataGroups(
 
 \item{samples}{vector from metadata corresponding to the samples ID, if applicable.}
 
-\item{individuals}{vector of individuals; first column of the [microSTASIS::mSpreviz()] output.}
+\item{individuals}{vector of individuals; first column of the \code{\link[=mSpreviz]{mSpreviz()}} output.}
+
+\item{variable}{name of the column with the variable used for grouping individuals.}
 
 \item{common}{pattern that separates the ID and the sampling time in rownames, if applicable.}
 
@@ -28,12 +30,10 @@ mSmetadataGroups(
 
 \item{ID}{If TreeSummarizedExperiment, one of the colData(data) colnames should be given as individuals.}
 
-\item{colname}{name of the column with the variable used for grouping individuals.}
-
-\item{time_points}{If TreeSummarizedExperiment, one of the colData(data) colnames should be given as sampling times.}
+\item{timePoints}{If TreeSummarizedExperiment, one of the colData(data) colnames should be given as sampling times.}
 }
 \value{
-A vector with the same length as the number of rows in the [microSTASIS::mSpreviz()] output.
+A vector with the same length as the number of rows in the \code{\link[=mSpreviz]{mSpreviz()}} output.
 }
 \description{
 Easily extract groups of individuals from sample metadata.

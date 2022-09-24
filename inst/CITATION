@@ -1,6 +1,6 @@
 citHeader("To cite microSTASIS in publications, please use:")
 
-citEntry(entry = "article",
+bibentry(bibtype = "article",
   title = "Assessment of human microbiota stability across longitudinal samples using iteratively growing-partitioned clustering",
   author = c(person("Pedro", "Sánchez-Sánchez"), person(c("Francisco", "J."), "Santonja"), person("Alfonso", "Benítez-Páez")),
   journal = "Briefings in Bioinformatics",

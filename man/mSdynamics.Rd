@@ -7,16 +7,16 @@
 mSdynamics(results, groups, points = TRUE, linetype = 2)
 }
 \arguments{
-\item{results}{input data.frame resulting from [microSTASIS::mSpreviz()].}
+\item{results}{input data.frame resulting from \code{\link[=mSpreviz]{mSpreviz()}}.}
 
-\item{groups}{vector with the same length as individuals, i.e. the number of rows in the [microSTASIS::mSpreviz()] output.}
+\item{groups}{vector with the same length as individuals, i.e. the number of rows in the \code{\link[=mSpreviz]{mSpreviz()}} output.}
 
 \item{points}{logical; FALSE to only visualize boxplots or TRUE to also add individual points.}
 
 \item{linetype}{numeric; type of line to connect the median value of paired times; 0 to avoid the line.}
 }
 \value{
-A plot with as many boxes as paired times by group in the form of a [ggplot2::ggplot()] object.
+A plot with as many boxes as paired times by group in the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
 Generate boxplots of the stability dynamics throughout sampling times by groups.

@@ -10,7 +10,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
 #' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
@@ -19,13 +18,12 @@
 #' MAE <- mSpreviz(results = list(MAE_t1_t25), times = list(t1_t25 = times$t1_t25))
 #' mSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
 #'           high = 'red2',  low = 'forestgreen', midpoint = 5)
-#' }
 mSerrorCV <- function(pairedTime, CVklist, k = 1L){
   individuals <- unique(stringr::str_split(rownames(pairedTime), "_0_", simplify = TRUE)[,1])
   samples <- seq(1, dim(pairedTime)[1], by = 2)
   CVmatrix <- t(as.data.frame(CVklist))
   limits <- seq(k, length(samples), length(samples) / dim(CVmatrix)[2])
-  location <- t(str_split(colnames(CVmatrix), ", ", simplify = TRUE))
+  location <- t(stringr::str_split(colnames(CVmatrix), ", ", simplify = TRUE))
   CVmatrix <- CVmatrix[, sapply(as.character(samples), function(sample) {
     place <- which(location %in% sample)
     if (place[1] > limits[1]) {place <- sum(place > limits) + 1} else {place <- 1}

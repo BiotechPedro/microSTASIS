@@ -13,15 +13,14 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
 #' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
 #'                                             common = "_0_", k = 2L, parallel = TRUE)
 #' cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), k = rep(2L, 3),
-#'                                       MoreArgs = list(pairedTimes = times, results = mS, common = "_0_"),
+#'                                       MoreArgs = list(pairedTimes = times, results = mS, 
+#'                                                       common = "_0_"), 
 #'                                       BPPARAM = BiocParallel::bpparam())
-#' }
 iterativeClusteringCV <- function(pairedTimes, results, name, common, k = 1L, parallel = TRUE) {
   if (((dim(pairedTimes[[name]])[1] / 2) %% k) == 0) {} else {
     stop(paste("This k number does not allow for exact sampling when paired times are", name))

@@ -16,9 +16,11 @@ mSheatmap(
 )
 }
 \arguments{
-\item{results}{input data.frame resulting from [microSTASIS::mSpreviz()].}
+\item{results}{input data.frame resulting from \code{\link[=mSpreviz]{mSpreviz()}}.}
 
 \item{order}{NULL object or character: none, mean or median; if the individuals should be sorted by any of those statistics of the stability values.}
+
+\item{times}{character; names of the paired times to plot, i.e. colnames of results.}
 
 \item{label}{logical; FALSE to avoid printing the mS score or TRUE to print it.}
 
@@ -31,7 +33,7 @@ mSheatmap(
 \item{midpoint}{value to situate the middle.}
 }
 \value{
-A heatmap of the stability values in the form of a [ggplot2::ggplot()] object.
+A heatmap of the stability values in the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
 Plot a heatmap of the stability results.

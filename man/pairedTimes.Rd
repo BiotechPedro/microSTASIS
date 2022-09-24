@@ -9,6 +9,8 @@ pairedTimes(data, ...)
 \arguments{
 \item{data}{input object: either a matrix with rownames including ID, common pattern and sampling time, or a TreeSummarizedExperiment object.}
 
+\item{...}{The rest of possible arguments listed below.}
+
 \item{sequential}{TRUE if paired times to analyse are sequential and present the desired alphanumerical order.}
 
 \item{assay}{If class(data) == "TreeSummarizedExperiment", name of the assay to use.}
@@ -31,5 +33,7 @@ Generate one or multiple matrices with paired times.
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-times_b <- pairedTimes(data = clr, sequential = FALSE, common = "_0_", specifiedTimePoints = c("1", "26"))
+times_b <- pairedTimes(data = clr, sequential = FALSE, common = "_0_", 
+                       specifiedTimePoints = c("1", "26"))
+
 }

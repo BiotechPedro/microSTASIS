@@ -2,7 +2,7 @@
 % Please edit documentation in R/mSinternalPairedTimes.R
 \name{mSinternalPairedTimes}
 \alias{mSinternalPairedTimes}
-\title{Internal function for [microSTASIS::pairedTimes()].}
+\title{Internal function for \code{\link[=pairedTimes]{pairedTimes()}}.}
 \usage{
 mSinternalPairedTimes(data, specifiedTimePoints, common)
 }
@@ -17,7 +17,7 @@ mSinternalPairedTimes(data, specifiedTimePoints, common)
 A list of matrices with the same number of columns as input and with samples from paired sampling times as rows.
 }
 \description{
-Internal function for [microSTASIS::pairedTimes()].
+Internal function for \code{\link[=pairedTimes]{pairedTimes()}}.
 }
 \examples{
 t1_t2 <- mSinternalPairedTimes(data = clr, specifiedTimePoints = c("1", "25"), common = "_0_")

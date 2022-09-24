@@ -2,16 +2,16 @@
 % Please edit documentation in R/mSerrorCV.R
 \name{mSerrorCV}
 \alias{mSerrorCV}
-\title{Compute the mean absolute error (MAE) in percentage after [microSTASIS::iterativeClusteringCV()].}
+\title{Compute the mean absolute error (MAE) in percentage after \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 \usage{
 mSerrorCV(pairedTime, CVklist, k = 1L)
 }
 \arguments{
 \item{pairedTime}{input matrix with paired times whose stability has being assessed.}
 
-\item{CVklist}{list resulting from [microSTASIS::iterativeClusteringCV()].}
+\item{CVklist}{list resulting from \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 
-\item{k}{integer; number of individuals to subset from the data. The same as used in [microSTASIS::iterativeClusteringCV()].}
+\item{k}{integer; number of individuals to subset from the data. The same as used in \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 }
 \value{
 A vector with MAE values for each individual's mS score.
@@ -20,7 +20,6 @@ A vector with MAE values for each individual's mS score.
 Compute the mean absolute error after the cross validation or plot lines connecting the stability values for each subset of the original matrix of paired times.
 }
 \examples{
-\donttest{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
 cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
@@ -29,5 +28,4 @@ MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, CVklist = cv_klist_t1_t25_k2,
 MAE <- mSpreviz(results = list(MAE_t1_t25), times = list(t1_t25 = times$t1_t25))
 mSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
           high = 'red2',  low = 'forestgreen', midpoint = 5)
-}
 }

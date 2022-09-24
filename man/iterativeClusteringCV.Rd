@@ -16,13 +16,13 @@ iterativeClusteringCV(
 \arguments{
 \item{pairedTimes}{list of matrices with paired times, i.e. samples to be stressed to multiple iterations.}
 
-\item{results}{the list output of [microSTASIS::iterativeClustering()].}
+\item{results}{the list output of \code{\link[=iterativeClustering]{iterativeClustering()}}.}
 
 \item{name}{character; name of the paired times whose stability is being assessed.}
 
 \item{common}{pattern that separates the ID and the sampling time.}
 
-\item{k}{integer; number of individuals to remove from the data for each time running [microSTASIS::iterativeClustering()].}
+\item{k}{integer; number of individuals to remove from the data for each time running \code{\link[=iterativeClustering]{iterativeClustering()}}.}
 
 \item{parallel}{logical; FALSE to sequentially run the internal loop or TRUE to do it by parallel computing.}
 }
@@ -30,16 +30,15 @@ iterativeClusteringCV(
 Multiple lists with multiple objects of class "kmeans".
 }
 \description{
-Perform cross validation in the way of leave-one-out (LOO) or k-fold of the stability results from [microSTASIS::iterativeClustering()].
+Perform cross validation in the way of leave-one-out (LOO) or k-fold of the stability results from \code{\link[=iterativeClustering]{iterativeClustering()}}.
 }
 \examples{
-\donttest{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
 cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
                                             common = "_0_", k = 2L, parallel = TRUE)
 cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), k = rep(2L, 3),
-                                      MoreArgs = list(pairedTimes = times, results = mS, common = "_0_"),
+                                      MoreArgs = list(pairedTimes = times, results = mS, 
+                                                      common = "_0_"), 
                                       BPPARAM = BiocParallel::bpparam())
-}
 }

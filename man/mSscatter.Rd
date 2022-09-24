@@ -7,7 +7,7 @@
 mSscatter(results, order = NULL, times, gridLines = FALSE, sideScale = 0.3)
 }
 \arguments{
-\item{results}{input data.frame resulting from [microSTASIS::mSpreviz()].}
+\item{results}{input data.frame resulting from \code{\link[=mSpreviz]{mSpreviz()}}.}
 
 \item{order}{NULL object or character: mean or median; if the individuals should be sorted by any of those statistics of the stability values.}
 
@@ -18,7 +18,7 @@ mSscatter(results, order = NULL, times, gridLines = FALSE, sideScale = 0.3)
 \item{sideScale}{numeric; scale of the side boxplot.}
 }
 \value{
-A scatter plot and a side boxplot of the stability values in the form of a [ggplot2::ggplot()] object.
+A scatter plot and a side boxplot of the stability values in the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
 Plot a scatter and side boxplot of the stability results.
@@ -27,5 +27,6 @@ Plot a scatter and side boxplot of the stability results.
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
 results <- mSpreviz(results = mS, times = times)
-mSscatter(results = results, order = "median", times = c("t1_t25", "t25_t26"), gridLines = TRUE, sideScale = 0.2)
+mSscatter(results = results, order = "median", times = c("t1_t25", "t25_t26"), 
+          gridLines = TRUE, sideScale = 0.2)
 }

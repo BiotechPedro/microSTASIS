@@ -2,20 +2,20 @@
 % Please edit documentation in R/mSpreviz.R
 \name{mSpreviz}
 \alias{mSpreviz}
-\title{Process the [microSTASIS::iterativeClustering()] output to a new format ready for the implemented visualization functions.}
+\title{Process the \code{\link[=iterativeClustering]{iterativeClustering()}} output to a new format ready for the implemented visualization functions.}
 \usage{
 mSpreviz(results, times)
 }
 \arguments{
-\item{results}{list; output of [microSTASIS::iterativeClustering()].}
+\item{results}{list; output of \code{\link[=iterativeClustering]{iterativeClustering()}}.}
 
-\item{times}{list; output of [microSTASIS::pairedTimes()].}
+\item{times}{list; output of \code{\link[=pairedTimes]{pairedTimes()}}.}
 }
 \value{
 A data frame ready for its use under the implemented visualization functions and others.
 }
 \description{
-Process the [microSTASIS::iterativeClustering()] output to a new format ready for the implemented visualization functions.
+Process the \code{\link[=iterativeClustering]{iterativeClustering()}} output to a new format ready for the implemented visualization functions.
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")

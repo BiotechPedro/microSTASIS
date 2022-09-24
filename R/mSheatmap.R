@@ -2,6 +2,7 @@
 #'
 #' @param results input data.frame resulting from [microSTASIS::mSpreviz()].
 #' @param order NULL object or character: none, mean or median; if the individuals should be sorted by any of those statistics of the stability values.
+#' @param times character; names of the paired times to plot, i.e. colnames of results.
 #' @param label logical; FALSE to avoid printing the mS score or TRUE to print it.
 #' @param low color for the lowest value.
 #' @param mid color for the middle value.
@@ -9,6 +10,7 @@
 #' @param midpoint value to situate the middle.
 #'
 #' @return A heatmap of the stability values in the form of a [ggplot2::ggplot()] object.
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -35,8 +37,8 @@ mSheatmap <- function(results, order = NULL, times, label = FALSE, low = "red2",
                                          }
                                        }), decreasing = FALSE), 1])], ordered = TRUE)
   }
-  plot <- ggplot2::ggplot(manual.melt, ggplot2::aes(y = individual, x = variable)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = value)) +
+  plot <- ggplot2::ggplot(manual.melt, ggplot2::aes(y = .data$individual, x = .data$variable)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = .data$value)) +
     ggplot2::scale_fill_gradient2(high = high, mid = mid, midpoint = midpoint,
                          low = low, na.value = 'white') +
     ggplot2::theme_void() + ggplot2::guides(fill = ggplot2::guide_colorbar(title.position = 'top',
@@ -50,7 +52,7 @@ mSheatmap <- function(results, order = NULL, times, label = FALSE, low = "red2",
           axis.ticks.length.y = grid::unit(0.25, "cm"),
           axis.ticks.length.x = grid::unit(0.25, "cm"))
   if (label) {
-    plot + ggplot2::geom_text(ggplot2::aes(label = value))
+    plot + ggplot2::geom_text(ggplot2::aes(label = .data$value))
   } else {
     plot
   }

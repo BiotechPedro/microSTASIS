@@ -1,6 +1,7 @@
 #' Generate one or multiple matrices with paired times.
 #'
 #' @param data input object: either a matrix with rownames including ID, common pattern and sampling time, or a TreeSummarizedExperiment object.
+#' @param ... The rest of possible arguments listed below.
 #' @param sequential TRUE if paired times to analyse are sequential and present the desired alphanumerical order.
 #' @param assay If class(data) == "TreeSummarizedExperiment", name of the assay to use.
 #' @param alternativeExp If class(data) == "TreeSummarizedExperiment", name of the alternative experiment to use (if applicable).
@@ -10,21 +11,25 @@
 #' @param specifiedTimePoints character vector to specify the selection of concrete paired times.
 #'
 #' @return A list of matrices with the same number of columns as input and with samples from paired sampling times as rows.
-#' @export
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' times_b <- pairedTimes(data = clr, sequential = FALSE, common = "_0_", specifiedTimePoints = c("1", "26"))
+#' times_b <- pairedTimes(data = clr, sequential = FALSE, common = "_0_", 
+#'                        specifiedTimePoints = c("1", "26"))
+#' 
+#' @export
 setGeneric("pairedTimes", function(data, ...) standardGeneric("pairedTimes"))
-setMethod("pairedTimes", "matrix", function(data, sequential, common, specifiedTimePoints){
+setMethod("pairedTimes", signature = "matrix", 
+          definition = function(data, sequential, common, specifiedTimePoints){
   microSTASIS::mSinternalPairedTimes(data = data, specifiedTimePoints = if (sequential) {
     stringr::str_sort(unique(stringr::str_split(rownames(data), common, simplify = TRUE)[, 2]), numeric = TRUE)
   }  else {if (all(specifiedTimePoints %in% unique(
     stringr::str_split(rownames(data), common, simplify = TRUE)[, 2]))) {specifiedTimePoints
   } else {stop("\nNot all specified time points are measured!")}}, common = common)
 })
-setMethod("pairedTimes", "TreeSummarizedExperiment", function(data, sequential, assay, alternativeExp, 
-                                                              ID, timePoints, specifiedTimePoints){
+setMethod("pairedTimes", signature = "TreeSummarizedExperiment", 
+          definition = function(data, sequential, assay, alternativeExp, 
+                                ID, timePoints, specifiedTimePoints){
   if (!is.null(assay) & !is.null(alternativeExp) & length(SingleCellExperiment::altExpNames(data)) != 0){
     if (alternativeExp %in% SingleCellExperiment::altExpNames(data)) {
       data <- data@int_colData@listData[["altExps"]]@listData[[alternativeExp]]@se
