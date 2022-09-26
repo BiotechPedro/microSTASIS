@@ -19,6 +19,6 @@ Process the \code{\link[=iterativeClustering]{iterativeClustering()}} output to 
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 results <- mSpreviz(results = mS, times = times)
 }

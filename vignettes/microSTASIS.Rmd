@@ -119,11 +119,45 @@ The first step is to subset an initial matrix of microbiome data with multiple s
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 ```
 
+Alternatively, the input can also be a `TreeSummarizedExperiment`, like below.
+
+```{r "TSE", message=FALSE}
+library(TreeSummarizedExperiment)
+```
+
+```{r "makeObject"}
+ID_common_time <- rownames(clr)
+samples <- 1:dim(clr)[1]
+metadata <- data.frame(samples, stringr::str_split(ID_common_time, "_", simplify = T))
+colnames(metadata)[2:4] <- c("ID", "common", "time_point")
+both_tse <- TreeSummarizedExperiment(assays = list(counts = t(clr)), colData = metadata)
+altExp(both_tse) <- SummarizedExperiment(assays = SimpleList(data = t(clr)), colData = metadata)
+assayNames(altExp(both_tse)) <- "data"
+```
+
+```{r "pairedTimesTSE"}
+TSE_times <- pairedTimes(data = both_tse, sequential = TRUE, assay = "counts",
+                         alternativeExp = NULL,
+                         ID = "ID", timePoints = "time_point")
+TSE_altExp_times <- pairedTimes(data = both_tse, sequential = TRUE, assay = "data",
+                                 alternativeExp = "unnamed1",
+                                 ID = "ID", timePoints = "time_point")
+```
+
+## Main algorithm
+
 Then, it is time for `iterativeClustering()`, which can be done in parallel and runs for every item in the list.
 
 ```{r "iterativeClustering"}
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 ```
+
+Note that the downstream functions work equally once we have the `pairedTimes()`output.
+
+```{r "iterativeClusteringTSE"}
+mS_TSE <- iterativeClustering(pairedTimes = TSE_times, parallel = TRUE, common = "_")
+```
+
 
 ## Visualization
 
@@ -169,9 +203,6 @@ group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, common
 mSdynamics(results, groups = group, points = TRUE, linetype = 0)
 ```
 
-## Others
-
-This example run on using a matrix as input but the package allows to easily use a TreeSummarizedExperiment object, as can be seen in the example code for each `help()` section of the functions.
 
 # Reproducibility
 

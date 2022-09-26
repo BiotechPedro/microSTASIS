@@ -15,7 +15,7 @@
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
 #' mSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), label = TRUE)
 mSheatmap <- function(results, order = NULL, times, label = FALSE, low = "red2", mid = "yellow",

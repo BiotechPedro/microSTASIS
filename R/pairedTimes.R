@@ -1,7 +1,7 @@
 #' Generate one or multiple matrices with paired times.
 #'
 #' @param data input object: either a matrix with rownames including ID, common pattern and sampling time, or a TreeSummarizedExperiment object.
-#' @param ... The rest of possible arguments listed below.
+#' @param ... Additional argument list that might not ever be used.
 #' @param sequential TRUE if paired times to analyse are sequential and present the desired alphanumerical order.
 #' @param assay If class(data) == "TreeSummarizedExperiment", name of the assay to use.
 #' @param alternativeExp If class(data) == "TreeSummarizedExperiment", name of the alternative experiment to use (if applicable).
@@ -12,13 +12,17 @@
 #'
 #' @return A list of matrices with the same number of columns as input and with samples from paired sampling times as rows.
 #'
+#' @export
+#' @docType methods
+#' @rdname pairedTimes-methods
+#'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' times_b <- pairedTimes(data = clr, sequential = FALSE, common = "_0_", 
 #'                        specifiedTimePoints = c("1", "26"))
-#' 
-#' @export
 setGeneric("pairedTimes", function(data, ...) standardGeneric("pairedTimes"))
+#' @rdname pairedTimes-methods
+#' @aliases pairedTimes,matrix,matrix-method
 setMethod("pairedTimes", signature = "matrix", 
           definition = function(data, sequential, common, specifiedTimePoints){
   microSTASIS::mSinternalPairedTimes(data = data, specifiedTimePoints = if (sequential) {
@@ -27,6 +31,8 @@ setMethod("pairedTimes", signature = "matrix",
     stringr::str_split(rownames(data), common, simplify = TRUE)[, 2]))) {specifiedTimePoints
   } else {stop("\nNot all specified time points are measured!")}}, common = common)
 })
+#' @rdname pairedTimes-methods
+#' @aliases pairedTimes,TreeSummarizedExperiment,TreeSummarizedExperiment-method
 setMethod("pairedTimes", signature = "TreeSummarizedExperiment", 
           definition = function(data, sequential, assay, alternativeExp, 
                                 ID, timePoints, specifiedTimePoints){

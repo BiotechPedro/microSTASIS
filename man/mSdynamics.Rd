@@ -23,7 +23,7 @@ Generate boxplots of the stability dynamics throughout sampling times by groups.
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 results <- mSpreviz(results = mS, times = times)
 metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), rep("old", 131-65)))
 group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, common = "_0_",

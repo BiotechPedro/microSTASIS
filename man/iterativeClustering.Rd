@@ -21,5 +21,5 @@ Perform Hartigan-Wong \code{\link[stats:kmeans]{stats::kmeans()}} algorithm as m
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 }

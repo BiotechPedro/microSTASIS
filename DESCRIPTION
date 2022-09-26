@@ -32,7 +32,8 @@ Suggests:
     sessioninfo,
     SingleCellExperiment,
     SummarizedExperiment,
-    TreeSummarizedExperiment
+    TreeSummarizedExperiment,
+    testthat (>= 3.0.0)
 biocViews: GeneticVariability, BiomedicalInformatics, Clustering, MultipleComparison, Microbiome
 BugReports: https://github.com/BiotechPedro/microSTASIS
 URL: https://doi.org/10.1093/bib/bbac055
@@ -43,3 +44,4 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
 LazyData: true
+Config/testthat/edition: 3

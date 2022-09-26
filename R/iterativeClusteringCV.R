@@ -14,12 +14,12 @@
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 #' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
 #'                                             common = "_0_", k = 2L, parallel = TRUE)
 #' cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), k = rep(2L, 3),
 #'                                       MoreArgs = list(pairedTimes = times, results = mS, 
-#'                                                       common = "_0_"), 
+#'                                                       common = "_"), 
 #'                                       BPPARAM = BiocParallel::bpparam())
 iterativeClusteringCV <- function(pairedTimes, results, name, common, k = 1L, parallel = TRUE) {
   if (((dim(pairedTimes[[name]])[1] / 2) %% k) == 0) {} else {
@@ -30,7 +30,7 @@ iterativeClusteringCV <- function(pairedTimes, results, name, common, k = 1L, pa
   subsetsPairedTimes <- lapply(kfold, function(removeSamples){
     pairedTimes[[name]][-c(removeSamples, removeSamples + 1), ]
   })
-  CVresult <- microSTASIS::iterativeClustering(subsetsPairedTimes, parallel, "_0_")
+  CVresult <- microSTASIS::iterativeClustering(subsetsPairedTimes, parallel, "_")
   individuals <- unique(stringr::str_split(rownames(pairedTimes[[name]]), common, simplify = TRUE)[, 1])
   CVlist <- lapply(individuals, function(ind) {
     valuesByIndividual <- unlist(lapply(seq_along(CVresult), function(mSsubsetPairedTime) {

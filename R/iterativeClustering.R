@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 iterativeClustering <- function(pairedTimes, parallel = TRUE, common) {
   kmeansList <- BiocParallel::bplapply(pairedTimes, function(pairedTimesMatrix){
     lapply(2:(dim(pairedTimesMatrix)[1] - 1), function(k) {

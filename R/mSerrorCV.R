@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 #' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
 #'                                             common = "_0_", k = 2L, parallel = TRUE)
 #' MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, CVklist = cv_klist_t1_t25_k2,  k = 2L)

@@ -8,7 +8,7 @@
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
 mSpreviz <- function(results, times){
   if (length(results) == length(names(times))) {

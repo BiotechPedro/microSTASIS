@@ -34,11 +34,11 @@ Perform cross validation in the way of leave-one-out (LOO) or k-fold of the stab
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
+mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
                                             common = "_0_", k = 2L, parallel = TRUE)
 cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), k = rep(2L, 3),
                                       MoreArgs = list(pairedTimes = times, results = mS, 
-                                                      common = "_0_"), 
+                                                      common = "_"), 
                                       BPPARAM = BiocParallel::bpparam())
 }
