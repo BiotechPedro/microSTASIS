@@ -128,10 +128,13 @@ library(TreeSummarizedExperiment)
 ```{r "makeObject"}
 ID_common_time <- rownames(clr)
 samples <- 1:dim(clr)[1]
-metadata <- data.frame(samples, stringr::str_split(ID_common_time, "_", simplify = T))
+metadata <- data.frame(samples, stringr::str_split(ID_common_time, "_", 
+                                                   simplify = TRUE))
 colnames(metadata)[2:4] <- c("ID", "common", "time_point")
-both_tse <- TreeSummarizedExperiment(assays = list(counts = t(clr)), colData = metadata)
-altExp(both_tse) <- SummarizedExperiment(assays = SimpleList(data = t(clr)), colData = metadata)
+both_tse <- TreeSummarizedExperiment(assays = list(counts = t(clr)), 
+                                     colData = metadata)
+altExp(both_tse) <- SummarizedExperiment(assays = SimpleList(data = t(clr)), 
+                                         colData = metadata)
 assayNames(altExp(both_tse)) <- "data"
 ```
 
@@ -139,8 +142,8 @@ assayNames(altExp(both_tse)) <- "data"
 TSE_times <- pairedTimes(data = both_tse, sequential = TRUE, assay = "counts",
                          alternativeExp = NULL,
                          ID = "ID", timePoints = "time_point")
-TSE_altExp_times <- pairedTimes(data = both_tse, sequential = TRUE, assay = "data",
-                                 alternativeExp = "unnamed1",
+TSE_altExp_times <- pairedTimes(data = both_tse, sequential = TRUE, 
+                                assay = "data", alternativeExp = "unnamed1",
                                  ID = "ID", timePoints = "time_point")
 ```
 
@@ -155,7 +158,8 @@ mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 Note that the downstream functions work equally once we have the `pairedTimes()`output.
 
 ```{r "iterativeClusteringTSE"}
-mS_TSE <- iterativeClustering(pairedTimes = TSE_times, parallel = TRUE, common = "_")
+mS_TSE <- iterativeClustering(pairedTimes = TSE_times, parallel = TRUE, 
+                              common = "_")
 ```
 
 
@@ -165,31 +169,47 @@ There are two main functions for visualizing the results: a scatter plot with bo
 
 ```{r "visualization"}
 results <- mSpreviz(results = mS, times = times)
-mSscatter(results = results, order = "median", times = c("t1_t25", "t25_t26"), gridLines = TRUE, sideScale = 0.2)
-mSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), label = TRUE)
+mSscatter(results = results, order = "median", times = c("t1_t25", "t25_t26"), 
+          gridLines = TRUE, sideScale = 0.2)
+mSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), 
+          label = TRUE)
 ```
 
 ## Cross-validation
 
 The stability results can be validated by cross validation (CV) in two ways: leave-one-out or k-fold. `k` is the number of individuals removed in each time that `iterativeClustering()` is run internally; it is equal to 1 for the LOOCV.
 
-```{r "CV"}
-cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), k = rep(2L, 3), 
-                                      MoreArgs = list(pairedTimes = times, results = mS, common = "_0_"), 
+```{r "CV", eval=FALSE}
+cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), 
+                                      k = rep(2L, 3), 
+                                      MoreArgs = list(pairedTimes = times, 
+                                                      results = mS, 
+                                                      common = "_0_"), 
                                       BPPARAM = BiocParallel::bpparam())
 ```
 
 Then, the result can be displayed in two ways: as the mean absolute error or as a visual representation of how the mS score change.
 
-```{r "error"}
-MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]],  k = 2L)
+```{r "error", eval=FALSE}
+MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]],  
+                        k = 2L)
 MAE <- mSpreviz(results = list(MAE_t1_t25), times = list(t1_t25 = times$t1_t25))
 mSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
           high = 'red2',  low = 'forestgreen', midpoint = 5)
 ```
 
-```{r "lines"}
+```{r, echo = FALSE}
+image <- "https://github.com/BiotechPedro/microSTASIS/tree/main/man/figures/mSerrorCV_plot.png"
+cat(paste0('<center><img src="', image,  '"></center>')) 
+```
+
+```{r "lines", eval=FALSE}
 mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]], k = 2L)
+```
+
+```{r, echo = FALSE}
+image <- "https://github.com/BiotechPedro/microSTASIS/tree/main/man/figures/mSlinesCV_output.png"
+cat(paste0('<center><img src="', image,  '"></center>')) 
 ```
 
 ## Metadata integration
@@ -197,8 +217,10 @@ mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]], k = 2L)
 The analysis can also be integrated with metadata of the individuals in the following way.
 
 ```{r "metadata"}
-metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), rep("old", 131-65)))
-group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, common = "_0_", 
+metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), 
+                                                       rep("old", 131-65)))
+group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, 
+                          common = "_0_", 
                           individuals = results$individual, variable = "age")
 mSdynamics(results, groups = group, points = TRUE, linetype = 0)
 ```

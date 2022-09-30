@@ -13,34 +13,47 @@
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
-#' metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), rep("old", 131-65)))
-#' group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, common = "_0_",
-#'                           individuals = results$individual, variable = "age")
+#' metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), 
+#'                        rep("old", 131-65)))
+#' group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, 
+#'                           common = "_0_", individuals = results$individual, 
+#'                           variable = "age")
 #' mSdynamics(results, groups = group, points = TRUE, linetype = 0)
 mSdynamics <- function(results, groups, points = TRUE, linetype = 2){
     results$group <- groups
-    manual.melt <- data.frame(individual = rep(results[, 1], length(colnames(results)) - 2),
-                              group = rep(results$group, length(colnames(results)) - 2),
-                              variable = factor(rep(colnames(results)[-c(1, dim(results)[2])], 
+    manual.melt <- data.frame(individual = rep(results[, 1], 
+                                               length(colnames(results)) - 2),
+                              group = rep(results$group, 
+                                          length(colnames(results)) - 2),
+                              variable = factor(rep(colnames(results)[
+                                - c(1, dim(results)[2])], 
                                                     each = dim(results)[1])),
-                              value = unlist(results[-c(1, dim(results)[2])]))
-    rownames(manual.melt) <- 1:(dim(results)[1]*(length(colnames(results)) - 2))
-    plot <- ggplot2::ggplot(manual.melt, ggplot2::aes(x = .data$variable, y = .data$value)) +
+                              value = unlist(results[- c(1, dim(results)[2])]))
+    rownames(manual.melt) <- seq_len(dim(results)[1] * 
+                                       (length(colnames(results)) - 2))
+    plot <- ggplot2::ggplot(manual.melt, ggplot2::aes(x = .data$variable, 
+                                                      y = .data$value)) +
       ggplot2::stat_summary(fun = stats::median, geom = "line", 
-                            ggplot2::aes(group = .data$group, color = .data$group),
+                            ggplot2::aes(group = .data$group, 
+                                         color = .data$group),
                             linetype = linetype, size = 1.3) +
-      ggplot2::geom_boxplot(ggplot2::aes(fill = .data$group), outlier.shape = NA,
+      ggplot2::geom_boxplot(ggplot2::aes(fill = .data$group), 
+                            outlier.shape = NA,
                             width = 0.2, colour = "black", alpha = 0.6) +
       ggplot2::labs(x = NULL, y = "Stability") + ggplot2::theme_classic() +
-      ggplot2::theme(legend.position = "top", legend.title = ggplot2::element_blank(),
-                     axis.text.x = ggplot2::element_text(margin = ggplot2::margin(t = 2.5, r = 0, b = 0, l = 0)),
-                     axis.text.y = ggplot2::element_text(margin = ggplot2::margin(t = 0, r = 5, b = 0, l = 0)),
+      ggplot2::theme(legend.position = "top", 
+                     legend.title = ggplot2::element_blank(),
+                     axis.text.x = ggplot2::element_text(
+                       margin = ggplot2::margin(t = 2.5, r = 0, b = 0, l = 0)),
+                     axis.text.y = ggplot2::element_text(
+                       margin = ggplot2::margin(t = 0, r = 5, b = 0, l = 0)),
                      axis.ticks = ggplot2::element_line(size = 0.5),
                      axis.ticks.length.y = grid::unit(0.25, "cm"),
                      axis.ticks.length.x = grid::unit(0.25, "cm"))
     if (points) {
       plot + ggplot2::geom_jitter(ggplot2::aes(fill = .data$group),
-                                  position = ggplot2::position_jitterdodge(jitter.width = 0.15),
+                                  position = ggplot2::position_jitterdodge(
+                                    jitter.width = 0.15),
                                   size = 2, pch = 21, alpha = 0.75)
     } else {plot}
 }

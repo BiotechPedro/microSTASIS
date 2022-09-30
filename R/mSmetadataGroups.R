@@ -16,9 +16,11 @@
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
-#' metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), rep("old", 131-65)))
-#' group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, common = "_0_",
-#'                           individuals = results$individual, variable = "age")
+#' metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), 
+#'                        rep("old", 131-65)))
+#' group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, 
+#'                           common = "_0_", individuals = results$individual, 
+#'                           variable = "age")
 mSmetadataGroups <- function(metadata, samples, individuals, variable, common,
                             TreeSummarizedExperiment = FALSE, ID, timePoints){
   if (TreeSummarizedExperiment){
@@ -27,12 +29,15 @@ mSmetadataGroups <- function(metadata, samples, individuals, variable, common,
     tp <- metadata[[timePoints]]
     samples <- paste(id, tp, sep = common)
   }
-  sapply(seq_along(individuals), function(ind){
-    samples_ind <- which(stringr::str_detect(samples,  paste(individuals[ind], substr(common, 1, 1), sep = "")))
+  vapply(seq_along(individuals), function(ind){
+    samples_ind <- which(stringr::str_detect(samples, 
+                                             paste(individuals[ind], 
+                                                   substr(common, 1, 1), 
+                                                   sep = "")))
     if (length(unique(metadata[samples_ind, variable])) == 1) {
       as.character(unique(metadata[samples_ind, variable]))
     } else {
-      stop(paste("Individual", individuals[ind], "presents multiple values for variable", variable))
+      stop("Some individual/s presents multiple values for variable")
     }
   })
 }

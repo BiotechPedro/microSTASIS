@@ -8,24 +8,33 @@
 #' @export
 #'
 #' @examples
-#' t1_t2 <- mSinternalPairedTimes(data = clr, specifiedTimePoints = c("1", "25"), common = "_0_")
+#' t1_t2 <- mSinternalPairedTimes(data = clr, 
+#'                                specifiedTimePoints = c("1", "25"), 
+#'                                common = "_0_")
 mSinternalPairedTimes <- function(data, specifiedTimePoints, common) {
-  multiplePairedTimes <- lapply(seq_along(specifiedTimePoints)[-length(specifiedTimePoints)], 
+  multiplePairedTimes <- lapply(seq_along(specifiedTimePoints)[
+    -length(specifiedTimePoints)], 
                                   function(timePoint){
     subset(data, stringr::str_detect(rownames(data),
-                             paste(substr(common, start = nchar(common), stop = nchar(common)),
-                                             specifiedTimePoints[timePoint], sep = "")) |
+                             paste(substr(common, start = nchar(common), 
+                                          stop = nchar(common)),
+                                   specifiedTimePoints[timePoint], sep = "")) |
              stringr::str_detect(rownames(data),
-                                 paste(substr(common, start = nchar(common), stop = nchar(common)),
-                                         specifiedTimePoints[timePoint + 1], sep = ""))
+                                 paste(substr(common, start = nchar(common), 
+                                              stop = nchar(common)),
+                                       specifiedTimePoints[timePoint + 1], 
+                                       sep = ""))
            )
   })
-  names(multiplePairedTimes) <- sapply(seq_along(specifiedTimePoints)[-length(specifiedTimePoints)], 
+  names(multiplePairedTimes) <- vapply(seq_along(specifiedTimePoints)[
+    -length(specifiedTimePoints)], 
                                          function(timePoint){
-    paste("t", specifiedTimePoints[timePoint], "_t", specifiedTimePoints[timePoint + 1], sep = "")
+    paste("t", specifiedTimePoints[timePoint], "_t", 
+          specifiedTimePoints[timePoint + 1], sep = "")
   })
   multiplePairedTimes <- lapply(multiplePairedTimes, function(timePoint){
-    individuals <- stringr::str_split(rownames(timePoint), common, simplify = TRUE)[, 1]
+    individuals <- stringr::str_split(rownames(timePoint), common, 
+                                      simplify = TRUE)[, 1]
     remove <- which(individuals %in% names(which(table(individuals) == 1)))
     if (is.null(remove)){
       timePoint

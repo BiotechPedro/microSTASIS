@@ -20,13 +20,18 @@ iterativeClustering <- function(pairedTimes, parallel = TRUE, common) {
     } else {BiocParallel::SerialParam(progressbar = TRUE)}
   )
   individualsList <- lapply(pairedTimes, function(pairedTimesMatrix) {
-    unique(stringr::str_split(rownames(pairedTimesMatrix), common, simplify = TRUE)[,1])
+    unique(stringr::str_split(rownames(pairedTimesMatrix), common, 
+                              simplify = TRUE)[,1])
   })
   results <- lapply(names(kmeansList), function(pairedTime){
-    stability <- data.frame(matrix(0, nrow = length(individualsList[[pairedTime]]), ncol = length(kmeansList[[pairedTime]])))
-    stability <- as.data.frame(lapply(seq_along(kmeansList[[pairedTime]]), function(klist){
-      unlist(lapply(seq_along(individualsList[[pairedTime]]), function(individual){
-        indSamples <- which(stringr::str_detect(names(kmeansList[[pairedTime]][[klist]]$cluster), individualsList[[pairedTime]][individual]))
+    stability <- data.frame(matrix(0, nrow = length(individualsList[[pairedTime]]), 
+                                   ncol = length(kmeansList[[pairedTime]])))
+    stability <- as.data.frame(lapply(seq_along(kmeansList[[pairedTime]]), 
+                                      function(klist){
+      unlist(lapply(seq_along(individualsList[[pairedTime]]), 
+                    function(individual){
+        indSamples <- which(stringr::str_detect(names(kmeansList[[pairedTime]][[klist]]$cluster), 
+                                                individualsList[[pairedTime]][individual]))
         if (kmeansList[[pairedTime]][[klist]]$cluster[indSamples][1] ==
             kmeansList[[pairedTime]][[klist]]$cluster[indSamples][2]){
           1
@@ -49,5 +54,7 @@ iterativeClustering <- function(pairedTimes, parallel = TRUE, common) {
     stability
   })
   names(results) <- names(kmeansList)
-  lapply(results, function(stabilityMatrix) round(apply(stabilityMatrix, 1, sum) / length(stabilityMatrix), 3))
+  lapply(results, function(stabilityMatrix) {
+    round(apply(stabilityMatrix, 1, sum) / length(stabilityMatrix), 3)
+  })
 }

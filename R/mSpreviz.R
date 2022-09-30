@@ -14,12 +14,15 @@ mSpreviz <- function(results, times){
   if (length(results) == length(names(times))) {
     individual <- sort(unique(unlist(lapply(results, names))))
     byTimes <- lapply(seq_along(results), function(timePoint) {
-      resultsByTime <- data.frame(names(results[[timePoint]]), results[[timePoint]])
+      resultsByTime <- data.frame(names(results[[timePoint]]), 
+                                  results[[timePoint]])
       colnames(resultsByTime) <- c("ind", names(times)[timePoint])
       resultsByTime
     })
-    resultslist <- as.data.frame(lapply(seq_along(byTimes), function(resultsByTime) {
-      merge(data.frame(individual), byTimes[[resultsByTime]], by.x = "individual", by.y = "ind", 
+    resultslist <- as.data.frame(lapply(seq_along(byTimes), 
+                                        function(resultsByTime) {
+      merge(data.frame(individual), byTimes[[resultsByTime]], 
+            by.x = "individual", by.y = "ind", 
             all.x = TRUE, all.y = FALSE, sort = TRUE)
       }))
     if(dim(resultslist)[2] > 2) {

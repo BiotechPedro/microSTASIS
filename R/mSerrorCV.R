@@ -10,27 +10,35 @@
 #' @export
 #'
 #' @examples
-#' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
+#' times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
-#' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
-#'                                             common = "_0_", k = 2L, parallel = TRUE)
-#' MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, CVklist = cv_klist_t1_t25_k2,  k = 2L)
-#' MAE <- mSpreviz(results = list(MAE_t1_t25), times = list(t1_t25 = times$t1_t25))
+#' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
+#'                                             results = mS, name = "t1_t25",
+#'                                             common = "_0_", k = 2L, 
+#'                                             parallel = TRUE)
+#' MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, 
+#'                         CVklist = cv_klist_t1_t25_k2,  k = 2L)
+#' MAE <- mSpreviz(results = list(MAE_t1_t25), 
+#'                 times = list(t1_t25 = times$t1_t25))
 #' mSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
 #'           high = 'red2',  low = 'forestgreen', midpoint = 5)
 mSerrorCV <- function(pairedTime, CVklist, k = 1L){
-  individuals <- unique(stringr::str_split(rownames(pairedTime), "_0_", simplify = TRUE)[,1])
+  individuals <- unique(stringr::str_split(rownames(pairedTime), "_0_", 
+                                           simplify = TRUE)[,1])
   samples <- seq(1, dim(pairedTime)[1], by = 2)
   CVmatrix <- t(as.data.frame(CVklist))
   limits <- seq(k, length(samples), length(samples) / dim(CVmatrix)[2])
   location <- t(stringr::str_split(colnames(CVmatrix), ", ", simplify = TRUE))
-  CVmatrix <- CVmatrix[, sapply(as.character(samples), function(sample) {
+  CVmatrix <- CVmatrix[, vapply(as.character(samples), function(sample) {
     place <- which(location %in% sample)
-    if (place[1] > limits[1]) {place <- sum(place > limits) + 1} else {place <- 1}
+    if (place[1] > limits[1]) {place <- sum(place > limits) + 1} else {
+      place <- 1
+    }
     place
   })]
-  MAE <- round(sapply(1:dim(CVmatrix)[1], function(ind){
-    sum(abs(CVmatrix[ind, ind] - CVmatrix[ind, ])) / (length(CVmatrix[ind, ]) - k) * 100
+  MAE <- round(vapply(seq_len(dim(CVmatrix)[1]), function(ind){
+    sum(abs(CVmatrix[ind, ind] - CVmatrix[ind, ])) / (length(CVmatrix[ind, ]) - 
+                                                        k) * 100
   }), 2)
   names(MAE) <- individuals
   MAE
