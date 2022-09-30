@@ -31,7 +31,7 @@ mSinternalPairedTimes <- function(data, specifiedTimePoints, common) {
                                          function(timePoint){
     paste("t", specifiedTimePoints[timePoint], "_t", 
           specifiedTimePoints[timePoint + 1], sep = "")
-  })
+  }, FUN.VALUE = "vector")
   multiplePairedTimes <- lapply(multiplePairedTimes, function(timePoint){
     individuals <- stringr::str_split(rownames(timePoint), common, 
                                       simplify = TRUE)[, 1]

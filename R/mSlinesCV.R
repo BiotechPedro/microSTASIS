@@ -39,7 +39,7 @@ mSlinesCV <- function (pairedTime, CVklist,  k = 1L, points = TRUE,
                                            CVsamples[sample], ", ", 
                                            simplify = TRUE)))], 
                      collapse = ", ")
-    })
+    }, FUN.VALUE = "vector")
     object <- data.frame(x = stats::reorder(removed_ind,
                                             sort(as.character(removed_ind))), 
                          y = unlist(CVklist), 
