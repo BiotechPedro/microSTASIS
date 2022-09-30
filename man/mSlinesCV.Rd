@@ -18,15 +18,17 @@ mSlinesCV(pairedTime, CVklist, k = 1L, points = TRUE, sizeLine = 0.5)
 \item{sizeLine}{numeric; if plotting, size of the multiple lines.}
 }
 \value{
-A line plotin the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object with the values of stability for the multiple subsets and the original matrix of paired samples (points).
+A line plot in the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object with the values of stability for the multiple subsets and the original matrix of paired samples (points).
 }
 \description{
 Plot lines connecting the mS score for each subset of the original matrix of paired times.
 }
 \examples{
-times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_0_")
-cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
-                                            common = "_0_", k = 2L, parallel = TRUE)
+times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
+mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
+                                            results = mS, name = "t1_t25",
+                                            common = "_0_", k = 2L, 
+                                            parallel = TRUE)
 mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_t1_t25_k2, k = 2L)
 }

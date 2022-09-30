@@ -39,5 +39,5 @@ mSmetadataGroups <- function(metadata, samples, individuals, variable, common,
     } else {
       stop("Some individual/s presents multiple values for variable")
     }
-  })
+  }, FUN.VALUE = "vector")
 }

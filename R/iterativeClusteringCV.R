@@ -19,11 +19,6 @@
 #'                                             results = mS, name = "t1_t25",
 #'                                             common = "_0_", k = 2L, 
 #'                                             parallel = TRUE)
-#' cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, 
-#'                                       name = names(times), k = rep(2L, 3),
-#'                                       MoreArgs = list(pairedTimes = times, 
-#'                                       results = mS, common = "_"), 
-#'                                       BPPARAM = BiocParallel::bpparam())
 iterativeClusteringCV <- function(pairedTimes, results, name, common, k = 1L, 
                                   parallel = TRUE) {
   if (((dim(pairedTimes[[name]])[1] / 2) %% k) == 0) {} else {

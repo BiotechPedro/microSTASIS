@@ -33,12 +33,10 @@ Multiple lists with multiple objects of class "kmeans".
 Perform cross validation in the way of leave-one-out (LOO) or k-fold of the stability results from \code{\link[=iterativeClustering]{iterativeClustering()}}.
 }
 \examples{
-times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
+times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
-cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, results = mS, name = "t1_t25",
-                                            common = "_0_", k = 2L, parallel = TRUE)
-cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), k = rep(2L, 3),
-                                      MoreArgs = list(pairedTimes = times, results = mS, 
-                                                      common = "_"), 
-                                      BPPARAM = BiocParallel::bpparam())
+cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
+                                            results = mS, name = "t1_t25",
+                                            common = "_0_", k = 2L, 
+                                            parallel = TRUE)
 }

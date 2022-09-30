@@ -35,11 +35,11 @@ mSerrorCV <- function(pairedTime, CVklist, k = 1L){
       place <- 1
     }
     place
-  }, FUN.VALUE = "vector")]
+  }, FUN.VALUE = 1)]
   MAE <- round(vapply(seq_len(dim(CVmatrix)[1]), function(ind){
     sum(abs(CVmatrix[ind, ind] - CVmatrix[ind, ])) / (length(CVmatrix[ind, ]) - 
                                                         k) * 100
-  }, FUN.VALUE = "vector"), 2)
+  }, FUN.VALUE = 1), 2)
   names(MAE) <- individuals
   MAE
 }

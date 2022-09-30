@@ -20,5 +20,7 @@ A list of matrices with the same number of columns as input and with samples fro
 Internal function for \code{\link[=pairedTimes]{pairedTimes()}}.
 }
 \examples{
-t1_t2 <- mSinternalPairedTimes(data = clr, specifiedTimePoints = c("1", "25"), common = "_0_")
+t1_t2 <- mSinternalPairedTimes(data = clr, 
+                               specifiedTimePoints = c("1", "25"), 
+                               common = "_0_")
 }
