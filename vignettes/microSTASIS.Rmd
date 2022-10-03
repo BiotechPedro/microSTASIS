@@ -179,7 +179,7 @@ mSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"),
 
 The stability results can be validated by cross validation (CV) in two ways: leave-one-out or k-fold. `k` is the number of individuals removed in each time that `iterativeClustering()` is run internally; it is equal to 1 for the LOOCV.
 
-```{r "CV", eval=FALSE}
+```{r "CV"}
 cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), 
                                       k = rep(2L, 3), 
                                       MoreArgs = list(pairedTimes = times, 
@@ -190,7 +190,7 @@ cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times)
 
 Then, the result can be displayed in two ways: as the mean absolute error or as a visual representation of how the mS score change.
 
-```{r "error", eval=FALSE}
+```{r "error"}
 MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]],  
                         k = 2L)
 MAE <- mSpreviz(results = list(MAE_t1_t25), times = list(t1_t25 = times$t1_t25))
@@ -198,18 +198,8 @@ mSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
           high = 'red2',  low = 'forestgreen', midpoint = 5)
 ```
 
-```{r, echo = FALSE}
-image <- "https://github.com/BiotechPedro/microSTASIS/tree/main/man/figures/mSerrorCV_plot.png"
-cat(paste0('<center><img src="', image,  '"></center>')) 
-```
-
-```{r "lines", eval=FALSE}
+```{r "lines"}
 mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]], k = 2L)
-```
-
-```{r, echo = FALSE}
-image <- "https://github.com/BiotechPedro/microSTASIS/tree/main/man/figures/mSlinesCV_output.png"
-cat(paste0('<center><img src="', image,  '"></center>')) 
 ```
 
 ## Metadata integration
@@ -241,7 +231,7 @@ The `r Biocpkg("microSTASIS")` package `r Citep(bib[["microSTASIS"]])` was made 
 This package was developed using `r BiocStyle::Biocpkg("biocthis")`.
 
 
-Code for creating the vignette
+Code for creating the vignette.
 
 ```{r createVignette, eval=FALSE}
 ## Create the vignette
