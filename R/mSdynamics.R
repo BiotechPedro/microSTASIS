@@ -1,17 +1,22 @@
-#' Generate boxplots of the stability dynamics throughout sampling times by groups.
+#' Generate boxplots of the stability dynamics throughout sampling times 
+#' by groups.
 #'
 #' @param results input data.frame resulting from [microSTASIS::mSpreviz()].
-#' @param groups vector with the same length as individuals, i.e. the number of rows in the [microSTASIS::mSpreviz()] output.
-#' @param points logical; FALSE to only visualize boxplots or TRUE to also add individual points.
-#' @param linetype numeric; type of line to connect the median value of paired times; 0 to avoid the line.
+#' @param groups vector with the same length as individuals, i.e. the number 
+#'         of rows in the [microSTASIS::mSpreviz()] output.
+#' @param points logical; FALSE to only visualize boxplots or TRUE to also add
+#'         individual points.
+#' @param linetype numeric; type of line to connect the median value of 
+#'         paired times; 0 to avoid the line.
 #'
-#' @return A plot with as many boxes as paired times by group in the form of a [ggplot2::ggplot()] object.
+#' @return A plot with as many boxes as paired times by group in the form of a 
+#'         [ggplot2::ggplot()] object.
 #' @importFrom rlang .data
 #' @export
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+#' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
 #' metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), 
 #'                        rep("old", 131-65)))
@@ -26,10 +31,10 @@ mSdynamics <- function(results, groups, points = TRUE, linetype = 2){
                               group = rep(results$group, 
                                           length(colnames(results)) - 2),
                               variable = factor(rep(colnames(results)[
-                                - c(1, dim(results)[2])], 
-                                                    each = dim(results)[1])),
-                              value = unlist(results[- c(1, dim(results)[2])]))
-    rownames(manual.melt) <- seq_len(dim(results)[1] * 
+                                - c(1, ncol(results))], 
+                                                    each = nrow(results))),
+                              value = unlist(results[- c(1, ncol(results))]))
+    rownames(manual.melt) <- seq_len(nrow(results) * 
                                        (length(colnames(results)) - 2))
     plot <- ggplot2::ggplot(manual.melt, ggplot2::aes(x = .data$variable, 
                                                       y = .data$value)) +

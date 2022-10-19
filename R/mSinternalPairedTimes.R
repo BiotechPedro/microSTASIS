@@ -1,17 +1,19 @@
 #' Internal function for [microSTASIS::pairedTimes()].
 #'
 #' @param data matrix with rownames including ID, common pattern and sampling time.
-#' @param specifiedTimePoints character vector to specify the selection of concrete paired times.
-#' @param common pattern that separates the ID and the sampling time in rownames.
+#' @param specifiedTimePoints character vector to specify the selection of 
+#'         concrete paired times.
+#' @param common pattern separating the ID and the sampling time in rownames.
 #'
-#' @return A list of matrices with the same number of columns as input and with samples from paired sampling times as rows.
+#' @return A list of matrices with the same number of columns as input and with
+#'         samples from paired sampling times as rows.
 #' @export
 #'
 #' @examples
 #' t1_t2 <- mSinternalPairedTimes(data = clr, 
 #'                                specifiedTimePoints = c("1", "25"), 
 #'                                common = "_0_")
-mSinternalPairedTimes <- function(data, specifiedTimePoints, common) {
+mSinternalPairedTimes <- function(data, specifiedTimePoints, common = "_") {
   multiplePairedTimes <- lapply(seq_along(specifiedTimePoints)[
     -length(specifiedTimePoints)], 
                                   function(timePoint){

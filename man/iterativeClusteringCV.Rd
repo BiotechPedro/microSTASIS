@@ -8,13 +8,15 @@ iterativeClusteringCV(
   pairedTimes,
   results,
   name,
-  common,
+  common = "_",
   k = 1L,
-  parallel = TRUE
+  BPPARAM = BiocParallel::bpparam()
 )
 }
 \arguments{
-\item{pairedTimes}{list of matrices with paired times, i.e. samples to be stressed to multiple iterations.}
+\item{pairedTimes}{list of matrices with paired times,
+i.e. samples to be stressed to multiple iterations.
+Output of \code{\link[=pairedTimes]{pairedTimes()}}.}
 
 \item{results}{the list output of \code{\link[=iterativeClustering]{iterativeClustering()}}.}
 
@@ -22,21 +24,27 @@ iterativeClusteringCV(
 
 \item{common}{pattern that separates the ID and the sampling time.}
 
-\item{k}{integer; number of individuals to remove from the data for each time running \code{\link[=iterativeClustering]{iterativeClustering()}}.}
+\item{k}{integer; number of individuals to remove from the data for
+each time running \code{\link[=iterativeClustering]{iterativeClustering()}}.}
 
-\item{parallel}{logical; FALSE to sequentially run the internal loop or TRUE to do it by parallel computing.}
+\item{BPPARAM}{supply a \code{BiocParallel} parameters object,
+e.g. \code{\link[BiocParallel:SerialParam-class]{BiocParallel::SerialParam()}} in the specific case of Windows OS
+or \code{\link[BiocParallel:register]{BiocParallel::bpparam()}}.}
 }
 \value{
 Multiple lists with multiple objects of class "kmeans".
 }
 \description{
-Perform cross validation in the way of leave-one-out (LOO) or k-fold of the stability results from \code{\link[=iterativeClustering]{iterativeClustering()}}.
+Perform cross validation of the stability results from
+\code{\link[=iterativeClustering]{iterativeClustering()}}in the way of leave-one-out (LOO)
+or k-fold (understood as quitting k individuals each time for
+assessing calculating the metric over individuals/k subsets
+of the data).
 }
 \examples{
 times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+mS <- iterativeClustering(pairedTimes = times, common = "_")
 cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
                                             results = mS, name = "t1_t25",
-                                            common = "_0_", k = 2L, 
-                                            parallel = TRUE)
+                                            common = "_0_", k = 2L)
 }

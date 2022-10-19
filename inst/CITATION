@@ -1,8 +1,11 @@
 citHeader("To cite microSTASIS in publications, please use:")
 
 bibentry(bibtype = "article",
-  title = "Assessment of human microbiota stability across longitudinal samples using iteratively growing-partitioned clustering",
-  author = c(person("Pedro", "Sánchez-Sánchez"), person(c("Francisco", "J."), "Santonja"), person("Alfonso", "Benítez-Páez")),
+  title = "Assessment of human microbiota stability across longitudinal 
+          samples using iteratively growing-partitioned clustering",
+  author = c(person("Pedro", "Sanchez-Sanchez"), 
+            person(c("Francisco", "J."), "Santonja"), 
+            person("Alfonso", "Benitez-Paez")),
   journal = "Briefings in Bioinformatics",
   volume = "23", number = "2", year = "2022", month = "02",
   issn = {1477-4054},

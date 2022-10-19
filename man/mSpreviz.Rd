@@ -2,7 +2,8 @@
 % Please edit documentation in R/mSpreviz.R
 \name{mSpreviz}
 \alias{mSpreviz}
-\title{Process the \code{\link[=iterativeClustering]{iterativeClustering()}} output to a new format ready for the implemented visualization functions.}
+\title{Process the \code{\link[=iterativeClustering]{iterativeClustering()}} output to a new format
+ready for the implemented visualization functions.}
 \usage{
 mSpreviz(results, times)
 }
@@ -12,13 +13,15 @@ mSpreviz(results, times)
 \item{times}{list; output of \code{\link[=pairedTimes]{pairedTimes()}}.}
 }
 \value{
-A data frame ready for its use under the implemented visualization functions and others.
+A data frame ready for its use under the implemented visualization
+functions and others.
 }
 \description{
-Process the \code{\link[=iterativeClustering]{iterativeClustering()}} output to a new format ready for the implemented visualization functions.
+Process the \code{\link[=iterativeClustering]{iterativeClustering()}} output to a new format
+ready for the implemented visualization functions.
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+mS <- iterativeClustering(pairedTimes = times, common = "_")
 results <- mSpreviz(results = mS, times = times)
 }

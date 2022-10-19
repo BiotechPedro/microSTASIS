@@ -2,30 +2,35 @@
 % Please edit documentation in R/mSerrorCV.R
 \name{mSerrorCV}
 \alias{mSerrorCV}
-\title{Compute the mean absolute error (MAE) in percentage after \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
+\title{Compute the mean absolute error (MAE) in percentage after
+\code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 \usage{
 mSerrorCV(pairedTime, CVklist, k = 1L)
 }
 \arguments{
-\item{pairedTime}{input matrix with paired times whose stability has being assessed.}
+\item{pairedTime}{input matrix with paired times whose stability
+has being assessed. One of the lists output of
+\code{\link[=pairedTimes]{pairedTimes()}}.}
 
 \item{CVklist}{list resulting from \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 
-\item{k}{integer; number of individuals to subset from the data. The same as used in \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
+\item{k}{integer; number of individuals to subset from the data.
+The same as used in \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 }
 \value{
 A vector with MAE values for each individual's mS score.
 }
 \description{
-Compute the mean absolute error after the cross validation or plot lines connecting the stability values for each subset of the original matrix of paired times.
+Compute the mean absolute error after the cross validation or
+plot lines connecting the stability values for each subset of the
+original matrix of paired times.
 }
 \examples{
 times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+mS <- iterativeClustering(pairedTimes = times, common = "_")
 cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
                                             results = mS, name = "t1_t25",
-                                            common = "_0_", k = 2L, 
-                                            parallel = TRUE)
+                                            common = "_0_", k = 2L)
 MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, 
                         CVklist = cv_klist_t1_t25_k2,  k = 2L)
 MAE <- mSpreviz(results = list(MAE_t1_t25), 

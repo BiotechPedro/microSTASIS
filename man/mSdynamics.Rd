@@ -2,28 +2,34 @@
 % Please edit documentation in R/mSdynamics.R
 \name{mSdynamics}
 \alias{mSdynamics}
-\title{Generate boxplots of the stability dynamics throughout sampling times by groups.}
+\title{Generate boxplots of the stability dynamics throughout sampling times
+by groups.}
 \usage{
 mSdynamics(results, groups, points = TRUE, linetype = 2)
 }
 \arguments{
 \item{results}{input data.frame resulting from \code{\link[=mSpreviz]{mSpreviz()}}.}
 
-\item{groups}{vector with the same length as individuals, i.e. the number of rows in the \code{\link[=mSpreviz]{mSpreviz()}} output.}
+\item{groups}{vector with the same length as individuals, i.e. the number
+of rows in the \code{\link[=mSpreviz]{mSpreviz()}} output.}
 
-\item{points}{logical; FALSE to only visualize boxplots or TRUE to also add individual points.}
+\item{points}{logical; FALSE to only visualize boxplots or TRUE to also add
+individual points.}
 
-\item{linetype}{numeric; type of line to connect the median value of paired times; 0 to avoid the line.}
+\item{linetype}{numeric; type of line to connect the median value of
+paired times; 0 to avoid the line.}
 }
 \value{
-A plot with as many boxes as paired times by group in the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
+A plot with as many boxes as paired times by group in the form of a
+\code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
-Generate boxplots of the stability dynamics throughout sampling times by groups.
+Generate boxplots of the stability dynamics throughout sampling times
+by groups.
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+mS <- iterativeClustering(pairedTimes = times, common = "_")
 results <- mSpreviz(results = mS, times = times)
 metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), 
                        rep("old", 131-65)))

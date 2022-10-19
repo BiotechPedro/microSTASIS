@@ -1,14 +1,16 @@
-#' Process the [microSTASIS::iterativeClustering()] output to a new format ready for the implemented visualization functions.
+#' Process the [microSTASIS::iterativeClustering()] output to a new format 
+#' ready for the implemented visualization functions.
 #'
 #' @param results list; output of [microSTASIS::iterativeClustering()].
 #' @param times list; output of [microSTASIS::pairedTimes()].
 #'
-#' @return A data frame ready for its use under the implemented visualization functions and others.
+#' @return A data frame ready for its use under the implemented visualization 
+#'         functions and others.
 #' @export
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+#' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
 mSpreviz <- function(results, times){
   if (length(results) == length(names(times))) {
@@ -25,8 +27,8 @@ mSpreviz <- function(results, times){
             by.x = "individual", by.y = "ind", 
             all.x = TRUE, all.y = FALSE, sort = TRUE)
       }))
-    if(dim(resultslist)[2] > 2) {
-      resultslist[, -seq(3, dim(resultslist)[2] - 1, 2)]
+    if(ncol(resultslist) > 2) {
+      resultslist[, -seq(3, ncol(resultslist) - 1, 2)]
     } else{
       resultslist
     }

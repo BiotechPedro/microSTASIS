@@ -1,36 +1,44 @@
 #' Cross validation of the iterative Hartigan-Wong k-means clustering.
 #'
-#' @description Perform cross validation in the way of leave-one-out (LOO) or k-fold of the stability results from [microSTASIS::iterativeClustering()].
+#' @description Perform cross validation of the stability results from 
+#'         [microSTASIS::iterativeClustering()]in the way of leave-one-out (LOO)
+#'         or k-fold (understood as quitting k individuals each time for 
+#'         assessing calculating the metric over individuals/k subsets 
+#'         of the data).
 #'
-#' @param pairedTimes list of matrices with paired times, i.e. samples to be stressed to multiple iterations.
+#' @param pairedTimes list of matrices with paired times, 
+#'         i.e. samples to be stressed to multiple iterations.
+#'         Output of [microSTASIS::pairedTimes()].
 #' @param results the list output of [microSTASIS::iterativeClustering()].
 #' @param name character; name of the paired times whose stability is being assessed.
 #' @param common pattern that separates the ID and the sampling time.
-#' @param k integer; number of individuals to remove from the data for each time running [microSTASIS::iterativeClustering()].
-#' @param parallel logical; FALSE to sequentially run the internal loop or TRUE to do it by parallel computing.
+#' @param k integer; number of individuals to remove from the data for 
+#'         each time running [microSTASIS::iterativeClustering()].
+#' @param BPPARAM supply a `BiocParallel` parameters object, 
+#'         e.g. [BiocParallel::SerialParam()] in the specific case of Windows OS
+#'         or [BiocParallel::bpparam()].
 #'
 #' @return Multiple lists with multiple objects of class "kmeans".
 #' @export
 #'
 #' @examples
 #' times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+#' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
 #'                                             results = mS, name = "t1_t25",
-#'                                             common = "_0_", k = 2L, 
-#'                                             parallel = TRUE)
-iterativeClusteringCV <- function(pairedTimes, results, name, common, k = 1L, 
-                                  parallel = TRUE) {
-  if (((dim(pairedTimes[[name]])[1] / 2) %% k) == 0) {} else {
+#'                                             common = "_0_", k = 2L)
+iterativeClusteringCV <- function(pairedTimes, results, name, common = "_", 
+                                  k = 1L, BPPARAM = BiocParallel::bpparam()) {
+  if (((nrow(pairedTimes[[name]]) / 2) %% k) == 0) {} else {
     stop(
       "This k number does not allow for exact sampling for the paired times")
   }
-  samples <- seq(1, dim(pairedTimes[[name]])[1], by = 2)
+  samples <- seq(1, nrow(pairedTimes[[name]]), by = 2)
   kfold <- as.list(as.data.frame(matrix(sample(samples), nrow = k)))
   subsetsPairedTimes <- lapply(kfold, function(removeSamples){
     pairedTimes[[name]][-c(removeSamples, removeSamples + 1), ]
   })
-  CVresult <- microSTASIS::iterativeClustering(subsetsPairedTimes, parallel, 
+  CVresult <- microSTASIS::iterativeClustering(subsetsPairedTimes, BPPARAM, 
                                                "_")
   individuals <- unique(stringr::str_split(rownames(pairedTimes[[name]]), 
                                            common, simplify = TRUE)[, 1])

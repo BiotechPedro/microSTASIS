@@ -1,21 +1,25 @@
 #' Plot a heatmap of the stability results.
 #'
 #' @param results input data.frame resulting from [microSTASIS::mSpreviz()].
-#' @param order NULL object or character: none, mean or median; if the individuals should be sorted by any of those statistics of the stability values.
-#' @param times character; names of the paired times to plot, i.e. colnames of results.
-#' @param label logical; FALSE to avoid printing the mS score or TRUE to print it.
+#' @param times character; names of the paired times to plot, 
+#'         i.e. colnames of results.
+#' @param order NULL object or character: none, mean or median; if the 
+#'         individuals should be sorted by any of those statistics of the 
+#'         stability values.
+#' @param label logical; TRUE to print the mS score or FALSE to not.
 #' @param low color for the lowest value.
 #' @param mid color for the middle value.
 #' @param high color for the highest values.
 #' @param midpoint value to situate the middle.
 #'
-#' @return A heatmap of the stability values in the form of a [ggplot2::ggplot()] object.
+#' @return A heatmap of the stability values in the form of a 
+#'         [ggplot2::ggplot()] object.
 #' @importFrom rlang .data
 #' @export
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+#' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
 #' mSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), 
 #'           label = TRUE)
@@ -26,9 +30,9 @@ mSheatmap <- function(results, order = NULL, times, label = FALSE, low = "red2",
   manual.melt <- data.frame(individual = rep(results[, 1], 
                                              length(colnames(results)) - 1),
                             variable = factor(rep(colnames(results)[-1], 
-                                                  each = dim(results)[1])),
+                                                  each = nrow(results))),
                             value = unlist(results[,-1]))
-  rownames(manual.melt) <- seq_len(dim(results)[1] * 
+  rownames(manual.melt) <- seq_len(nrow(results) * 
                                      (length(colnames(results)) - 1))
   if (!is.null(order)) {
     manual.melt$individual <- factor(x = manual.melt$individual,

@@ -1,31 +1,35 @@
-#' Stability of individuals after iteratively performing Hartigan-Wong k-means clustering.
+#' Stability of individuals after iteratively performing 
+#' Hartigan-Wong k-means clustering.
 #'
 #' @description Perform Hartigan-Wong [stats::kmeans()] algorithm as many times as possible. The values of k are from 2 to the number of samples minus 1. Those individuals whose paired samples are clustered under the same label sum 1. If paired samples are in different clusters, then sum 0, except when the euclidean distance between them is smaller to the ones of each sample to its centroid. This is done for all possible values of k and, finally, divided the sum by k, so obtaining a value between 0 and 1.
 #'
-#' @param pairedTimes list of matrices with paired times, i.e. samples to be stressed to multiple iterations.
-#' @param parallel logical; FALSE to sequentially run the internal loop or TRUE to do it by parallel computing.
+#' @param pairedTimes list of matrices with paired times, 
+#'         i.e. samples to be stressed to multiple iterations. 
+#'         Output of [microSTASIS::pairedTimes()].
+#' @param BPPARAM supply a `BiocParallel` parameters object, 
+#'         e.g. [BiocParallel::SerialParam()] in the specific case of Windows OS
+#'         or [BiocParallel::bpparam()].
 #' @param common pattern that separates the ID and the sampling time.
 #'
-#' @return µSTASIS stability score (mS) for the individuals from the corresponding paired times.
+#' @return µSTASIS stability score (mS) for the individuals from the 
+#'         corresponding paired times.
 #' @export
 #'
 #' @examples
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
-iterativeClustering <- function(pairedTimes, parallel = TRUE, common) {
+#' mS <- iterativeClustering(pairedTimes = times, common = "_")
+iterativeClustering <- function(pairedTimes, BPPARAM = BiocParallel::bpparam(), 
+                                common = "_") {
   kmeansList <- BiocParallel::bplapply(pairedTimes, function(pairedTimesMatrix){
-    lapply(2:(dim(pairedTimesMatrix)[1] - 1), function(k) {
+    lapply(2:(nrow(pairedTimesMatrix) - 1), function(k) {
       stats::kmeans(pairedTimesMatrix, k, iter.max = 20, nstart = 50)
-    })}, BPPARAM = if(parallel) {BiocParallel::bpparam()
-    } else {BiocParallel::SerialParam(progressbar = TRUE)}
+    })}, BPPARAM = BPPARAM
   )
   individualsList <- lapply(pairedTimes, function(pairedTimesMatrix) {
     unique(stringr::str_split(rownames(pairedTimesMatrix), common, 
                               simplify = TRUE)[,1])
   })
   results <- lapply(names(kmeansList), function(pairedTime){
-    stability <- data.frame(matrix(0, nrow = length(individualsList[[pairedTime]]), 
-                                   ncol = length(kmeansList[[pairedTime]])))
     stability <- as.data.frame(lapply(seq_along(kmeansList[[pairedTime]]), 
                                       function(klist){
       unlist(lapply(seq_along(individualsList[[pairedTime]]), 

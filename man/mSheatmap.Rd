@@ -18,11 +18,14 @@ mSheatmap(
 \arguments{
 \item{results}{input data.frame resulting from \code{\link[=mSpreviz]{mSpreviz()}}.}
 
-\item{order}{NULL object or character: none, mean or median; if the individuals should be sorted by any of those statistics of the stability values.}
+\item{order}{NULL object or character: none, mean or median; if the
+individuals should be sorted by any of those statistics of the
+stability values.}
 
-\item{times}{character; names of the paired times to plot, i.e. colnames of results.}
+\item{times}{character; names of the paired times to plot,
+i.e. colnames of results.}
 
-\item{label}{logical; FALSE to avoid printing the mS score or TRUE to print it.}
+\item{label}{logical; TRUE to print the mS score or FALSE to not.}
 
 \item{low}{color for the lowest value.}
 
@@ -33,14 +36,15 @@ mSheatmap(
 \item{midpoint}{value to situate the middle.}
 }
 \value{
-A heatmap of the stability values in the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
+A heatmap of the stability values in the form of a
+\code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object.
 }
 \description{
 Plot a heatmap of the stability results.
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+mS <- iterativeClustering(pairedTimes = times, common = "_")
 results <- mSpreviz(results = mS, times = times)
 mSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), 
           label = TRUE)

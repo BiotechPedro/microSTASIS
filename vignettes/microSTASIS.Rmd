@@ -27,11 +27,11 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r vignetteSetup, echo=FALSE, message=FALSE, warning = FALSE}
+```{r vignetteSetup, echo=FALSE, warning = FALSE}
 ## Track time spent on making the vignette
 startTime <- Sys.time()
 ## Bib setup
-library("RefManageR")
+suppressPackageStartupMessages(library("RefManageR"))
 ## Write bibliography information
 bib <- c(
     R = citation(),
@@ -59,10 +59,11 @@ Firstly, two samples from the same individual has to be paired. For that, one ca
 
 Once we have the paired samples, it is time for the main algorithm: iterative clustering. Concretely, Hartigan-Wong k-means algorithm is used as many times as possible for stressing out paired samples from the same individuals to test if they remain together for multiple numbers of clusters over a whole data set of individuals. Also, this is corrected in those cases where the distance between samples from the same individuals is lower than the distances to their respective centroids.
 
-```{r, echo = FALSE}
-image <- "https://github.com/BiotechPedro/microSTASIS/blob/main/man/figures/microSTASIS_algo.png"
-cat(paste0('<center><img src="', image,  '"></center>')) 
-```
+![](../man/figures/microSTASIS_algo.png)
+
+## Why Bioconductor?
+
+Although the package was initially released at CRAN, we feel that releasing it at Bioconductor could add better experience to the user. Some functions were internally modifyed leveraging on other Bioconductor packages as well as we added interoperability of our workflow with `TreeSummarizedExperiment`.
 
 * `r Biocpkg("microSTASIS")` `r Citep(bib[["microSTASIS"]])`
 
@@ -70,10 +71,7 @@ cat(paste0('<center><img src="', image,  '"></center>'))
 
 ## Install `microSTASIS`
 
-[comment]: <> (`R` is an open-source statistical environment which can be easily modified to enhance its functionality via packages.) 
 `r Biocpkg("microSTASIS")` is a `R` package available via the [Bioconductor](http://bioconductor.org) repository (formerly at [CRAN](https://cran.r-project.org/package=microSTASIS)) which can be installed by using the following commands in your `R` session:
-
-[comment]: <> (`R` can be installed on any operating system from [CRAN](https://cran.r-project.org/) after which you can install `r Biocpkg("MyBioconductorPackage")`)
 
 ```{r "install", eval = FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
@@ -83,21 +81,6 @@ BiocManager::install("microSTASIS")
 ## Check that you have a valid Bioconductor installation
 BiocManager::valid()
 ```
-
-[comment]: <> (
-## Required knowledge
-
-`r Biocpkg("microSTASIS")` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with microbiome data, such as `r Biocpkg("SummarizedExperiment")` or `r Biocpkg("TreeSummarizedExperiment")`.
-
-If you are asking yourself the question "Where do I start using Bioconductor?" you might be interested in [this blog post](http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU).
-
-## Asking for help
-
-As package developers, we try to explain clearly how to use our packages and in which order to use the functions. But `R` and `Bioconductor` have a steep learning curve so it is critical to learn where to ask for help. The blog post quoted above mentions some but we would like to highlight the [Bioconductor support site](https://support.bioconductor.org/) as the main resource for getting help: remember to use the `microSTASIS` tag and check [the older posts](https://support.bioconductor.org/t/microSTASIS/). Other alternatives are available such as creating GitHub issues and tweeting. However, please note that if you want to receive help you should adhere to the [posting guidelines](http://www.bioconductor.org/help/support/posting-guide/). It is particularly critical that you provide a small reproducible example and your session information so package developers can track down the source of the error.
-
-
-## 
-)
 
 ## Citing `microSTASIS`
 
@@ -110,22 +93,34 @@ citation("microSTASIS")
 
 # Quick start to using `microSTASIS`
 
-```{r "start", message=FALSE}
+```{r "start"}
+## Load the package
 library("microSTASIS")
 ```
+
+The input data can be a matrix where the rownames include ID, common pattern and sampling time and columns are the microbial features i.e. amplicon sequence variants (ASVs) or operational taxonomic units (OTUs). Alternatively, it can be a TreeSummarizedExperiment object containing the matrix in an `assay` slot or within an `altExps` (alternative experiment) slot. Then, the ID and sampling time info should be in the `colData` slot.
+
+```{r "input"}
+## Show the input data
+clr[1:8, 1:6]
+```
+
 The first step is to subset an initial matrix of microbiome data with multiple sampling points. The`pairedTimes()` function already do it for every possible paired times in a `sequential = TRUE` way or for specific times points, for example: `sequential = FALSE, specifiedTimePoints = c("1", "3")`. The output is a list with length equal to the number of paired times.
 
 ```{r "pairedTimes"}
+## Subseting the initial data to a list of multiple paired times
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 ```
 
 Alternatively, the input can also be a `TreeSummarizedExperiment`, like below.
 
-```{r "TSE", message=FALSE}
-library(TreeSummarizedExperiment)
+```{r "TSE"}
+## Loading the TSE package
+suppressPackageStartupMessages(library(TreeSummarizedExperiment))
 ```
 
 ```{r "makeObject"}
+## Creating a TreeSummarizedExperiment object
 ID_common_time <- rownames(clr)
 samples <- 1:dim(clr)[1]
 metadata <- data.frame(samples, stringr::str_split(ID_common_time, "_", 
@@ -139,6 +134,7 @@ assayNames(altExp(both_tse)) <- "data"
 ```
 
 ```{r "pairedTimesTSE"}
+## Subseting the data as two different TSE objects to two list of multiple paired times
 TSE_times <- pairedTimes(data = both_tse, sequential = TRUE, assay = "counts",
                          alternativeExp = NULL,
                          ID = "ID", timePoints = "time_point")
@@ -147,19 +143,22 @@ TSE_altExp_times <- pairedTimes(data = both_tse, sequential = TRUE,
                                  ID = "ID", timePoints = "time_point")
 ```
 
+It is pretty important not to forget `sequential = FALSE` when the user wants to get `specifiedTimePoints`.
+
 ## Main algorithm
 
 Then, it is time for `iterativeClustering()`, which can be done in parallel and runs for every item in the list.
 
 ```{r "iterativeClustering"}
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+## Main algorithm applied to the matrix-derived object
+mS <- iterativeClustering(pairedTimes = times, common = "_")
 ```
 
-Note that the downstream functions work equally once we have the `pairedTimes()`output.
+Note that the downstream functions work equally once we have the `pairedTimes()`output. Also, `BPPARAM` can be specified as following `BiocParallel` guides.
 
 ```{r "iterativeClusteringTSE"}
-mS_TSE <- iterativeClustering(pairedTimes = TSE_times, parallel = TRUE, 
-                              common = "_")
+## Main algorithm applied to the TSE-derived object
+mS_TSE <- iterativeClustering(pairedTimes = TSE_times, common = "_")
 ```
 
 
@@ -168,53 +167,78 @@ mS_TSE <- iterativeClustering(pairedTimes = TSE_times, parallel = TRUE,
 There are two main functions for visualizing the results: a scatter plot with boxplots on the side and a heatmap.
 
 ```{r "visualization"}
+## Prepare the result for the later visualization functions
 results <- mSpreviz(results = mS, times = times)
+## Scatter plot of the stability scores per patient and time
 mSscatter(results = results, order = "median", times = c("t1_t25", "t25_t26"), 
           gridLines = TRUE, sideScale = 0.2)
+## Heatmap of the stability scores per patient and time
 mSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), 
           label = TRUE)
 ```
+
+Both functions can be sorted by the stability score by the argument `order`.
+
+The interpretation of both visualizations is similar. One the one side we can see how the stability scores differ a little bit between the sampling points, although the boxplots show that the values range from 0 to 1. Equally, the heatmap allows to see what are the most stable patients over sampling points.
 
 ## Cross-validation
 
 The stability results can be validated by cross validation (CV) in two ways: leave-one-out or k-fold. `k` is the number of individuals removed in each time that `iterativeClustering()` is run internally; it is equal to 1 for the LOOCV.
 
 ```{r "CV"}
+## Cross validation in a parallelized way with different k-fold values
 cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), 
                                       k = rep(2L, 3), 
                                       MoreArgs = list(pairedTimes = times, 
                                                       results = mS, 
-                                                      common = "_0_"), 
-                                      BPPARAM = BiocParallel::bpparam())
+                                                      common = "_0_"))
 ```
 
 Then, the result can be displayed in two ways: as the mean absolute error or as a visual representation of how the mS score change.
 
 ```{r "error"}
+## Calculate the mean absolute error after computing the cross validation
 MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]],  
                         k = 2L)
+```
+
+Remember that for both `mSerrorCV()` and `mSlinesCV()`, `k` argument has to be the same previously used for extracting the input for `CVklist`. For that, we recommend to save it in another local variable and then use it for the arguments of the different functions.
+
+```{r "error viz"}
+## Prepare the result for the later visualization functions
 MAE <- mSpreviz(results = list(MAE_t1_t25), times = list(t1_t25 = times$t1_t25))
+## Heatmap of the mean absolute error values per patient and time
 mSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
           high = 'red2',  low = 'forestgreen', midpoint = 5)
 ```
 
+The visualizations allows to look at the reliability of the stability metric for our data set and to detect some cases where the score should not be taken doubtlessly.
+
 ```{r "lines"}
+## Line plot of the stability scores per patient at a given paired times
+## Both the proper score after iterative clustering and the cross validation ones
 mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]], k = 2L)
 ```
+
+The lines visualizations should be seen as a way to track how the stability score for an individual in a given paired time changes in dependence to the data set i.e. when removing other individuals. Variability is expected, but heavy drops or increases not.
 
 ## Metadata integration
 
 The analysis can also be integrated with metadata of the individuals in the following way.
 
 ```{r "metadata"}
+## Create a metadata data frame
 metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), 
                                                        rep("old", 131-65)))
+## Modify the metadata to the proper format that match with results
 group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, 
-                          common = "_0_", 
-                          individuals = results$individual, variable = "age")
+                          common = "_0_", individuals = results$individual, 
+                          variable = "age")
+## Boxplot with individual stability scores split by groups
 mSdynamics(results, groups = group, points = TRUE, linetype = 0)
 ```
 
+This plot allow to track general trends of stability in different groups across time.
 
 # Reproducibility
 
@@ -257,7 +281,7 @@ totalTime <- diff(c(startTime, Sys.time()))
 round(totalTime, digits = 3)
 ```
 
-`R` session information.
+# R session information
 
 ```{r reproduce3, echo=FALSE}
 ## Session info

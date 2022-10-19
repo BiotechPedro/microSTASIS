@@ -4,17 +4,19 @@
 \alias{mSinternalPairedTimes}
 \title{Internal function for \code{\link[=pairedTimes]{pairedTimes()}}.}
 \usage{
-mSinternalPairedTimes(data, specifiedTimePoints, common)
+mSinternalPairedTimes(data, specifiedTimePoints, common = "_")
 }
 \arguments{
 \item{data}{matrix with rownames including ID, common pattern and sampling time.}
 
-\item{specifiedTimePoints}{character vector to specify the selection of concrete paired times.}
+\item{specifiedTimePoints}{character vector to specify the selection of
+concrete paired times.}
 
-\item{common}{pattern that separates the ID and the sampling time in rownames.}
+\item{common}{pattern separating the ID and the sampling time in rownames.}
 }
 \value{
-A list of matrices with the same number of columns as input and with samples from paired sampling times as rows.
+A list of matrices with the same number of columns as input and with
+samples from paired sampling times as rows.
 }
 \description{
 Internal function for \code{\link[=pairedTimes]{pairedTimes()}}.

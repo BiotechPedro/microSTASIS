@@ -1,24 +1,31 @@
 #' Plot the stability values after [microSTASIS::iterativeClusteringCV()].
 #'
-#' @description Plot lines connecting the mS score for each subset of the original matrix of paired times.
+#' @description Plot lines connecting the mS score for each subset of the 
+#'         original matrix of paired times.
 #'
-#' @param pairedTime input matrix with paired times whose stability has being assessed.
+#' @param pairedTime input matrix with paired times whose stability 
+#'         has being assessed. One of the lists output of 
+#'         [microSTASIS::pairedTimes()].
 #' @param CVklist list resulting from [microSTASIS::iterativeClusteringCV()].
-#' @param k integer; number of individuals to subset from the data. The same as used in [microSTASIS::iterativeClusteringCV()].
-#' @param points logical; if plotting, FALSE to only plot lines and TRUE to add points on the mS score, i.e. result from [microSTASIS::iterativeClusteringCV()].
+#' @param k integer; number of individuals to subset from the data. 
+#'         The same as used in [microSTASIS::iterativeClusteringCV()].
+#' @param points logical; if plotting, FALSE to only plot lines and TRUE to 
+#'         add points on the mS score, i.e. result from 
+#'         [microSTASIS::iterativeClusteringCV()].
 #' @param sizeLine numeric; if plotting, size of the multiple lines.
 #'
-#' @return A line plot in the form of a [ggplot2::ggplot()] object with the values of stability for the multiple subsets and the original matrix of paired samples (points).
+#' @return A line plot in the form of a [ggplot2::ggplot()] object with the 
+#'         values of stability for the multiple subsets and the original matrix
+#'         of paired samples (points).
 #' @importFrom rlang .data
 #' @export
 #'
 #' @examples
 #' times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
-#' mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+#' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
 #'                                             results = mS, name = "t1_t25",
-#'                                             common = "_0_", k = 2L, 
-#'                                             parallel = TRUE)
+#'                                             common = "_0_", k = 2L)
 #' mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_t1_t25_k2, k = 2L)
 mSlinesCV <- function (pairedTime, CVklist,  k = 1L, points = TRUE, 
                        sizeLine = 0.5) {
@@ -31,7 +38,7 @@ mSlinesCV <- function (pairedTime, CVklist,  k = 1L, points = TRUE,
                          individual = sort(rep(individuals, length(CVklist))))
   }
   else {
-    samples <- seq(1, dim(pairedTime)[1], by = 2)
+    samples <- seq(1, nrow(pairedTime), by = 2)
     CVsamples <- colnames(t(as.data.frame(CVklist)))
     removed_ind <- vapply(seq_along(CVsamples), function(sample) {
       stringr::str_c(individuals[which(samples %in% 

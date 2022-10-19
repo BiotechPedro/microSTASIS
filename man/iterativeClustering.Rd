@@ -2,24 +2,34 @@
 % Please edit documentation in R/iterativeClustering.R
 \name{iterativeClustering}
 \alias{iterativeClustering}
-\title{Stability of individuals after iteratively performing Hartigan-Wong k-means clustering.}
+\title{Stability of individuals after iteratively performing
+Hartigan-Wong k-means clustering.}
 \usage{
-iterativeClustering(pairedTimes, parallel = TRUE, common)
+iterativeClustering(
+  pairedTimes,
+  BPPARAM = BiocParallel::bpparam(),
+  common = "_"
+)
 }
 \arguments{
-\item{pairedTimes}{list of matrices with paired times, i.e. samples to be stressed to multiple iterations.}
+\item{pairedTimes}{list of matrices with paired times,
+i.e. samples to be stressed to multiple iterations.
+Output of \code{\link[=pairedTimes]{pairedTimes()}}.}
 
-\item{parallel}{logical; FALSE to sequentially run the internal loop or TRUE to do it by parallel computing.}
+\item{BPPARAM}{supply a \code{BiocParallel} parameters object,
+e.g. \code{\link[BiocParallel:SerialParam-class]{BiocParallel::SerialParam()}} in the specific case of Windows OS
+or \code{\link[BiocParallel:register]{BiocParallel::bpparam()}}.}
 
 \item{common}{pattern that separates the ID and the sampling time.}
 }
 \value{
-µSTASIS stability score (mS) for the individuals from the corresponding paired times.
+µSTASIS stability score (mS) for the individuals from the
+corresponding paired times.
 }
 \description{
 Perform Hartigan-Wong \code{\link[stats:kmeans]{stats::kmeans()}} algorithm as many times as possible. The values of k are from 2 to the number of samples minus 1. Those individuals whose paired samples are clustered under the same label sum 1. If paired samples are in different clusters, then sum 0, except when the euclidean distance between them is smaller to the ones of each sample to its centroid. This is done for all possible values of k and, finally, divided the sum by k, so obtaining a value between 0 and 1.
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+mS <- iterativeClustering(pairedTimes = times, common = "_")
 }

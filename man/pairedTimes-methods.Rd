@@ -24,26 +24,35 @@ pairedTimes(data, ...)
 )
 }
 \arguments{
-\item{data}{input object: either a matrix with rownames including ID, common pattern and sampling time, or a TreeSummarizedExperiment object.}
+\item{data}{input object: either a matrix with rownames including ID, common
+pattern and sampling time, or a TreeSummarizedExperiment object.}
 
 \item{...}{Additional argument list that might not ever be used.}
 
-\item{sequential}{TRUE if paired times to analyse are sequential and present the desired alphanumerical order.}
+\item{sequential}{TRUE if paired times to analyse are sequential and present
+the desired alphanumerical order.}
 
-\item{common}{If is.matrix(data), pattern that separates the ID and the sampling time in rownames.}
+\item{common}{If is.matrix(data), pattern that separates the ID and
+the sampling time in rownames.}
 
-\item{specifiedTimePoints}{character vector to specify the selection of concrete paired times.}
+\item{specifiedTimePoints}{character vector to specify the selection
+of concrete paired times.}
 
-\item{assay}{If class(data) == "TreeSummarizedExperiment", name of the assay to use.}
+\item{assay}{If class(data) == "TreeSummarizedExperiment",
+name of the assay to use.}
 
-\item{alternativeExp}{If class(data) == "TreeSummarizedExperiment", name of the alternative experiment to use (if applicable).}
+\item{alternativeExp}{If class(data) == "TreeSummarizedExperiment",
+name of the alternative experiment to use (if applicable).}
 
-\item{ID}{If class(data) == "TreeSummarizedExperiment", one of the colData(data) colnames should be given as individuals.}
+\item{ID}{If class(data) == "TreeSummarizedExperiment", one of the
+colData(data) colnames should be given as individuals.}
 
-\item{timePoints}{If class(data) == "TreeSummarizedExperiment", one of the colData(data) colnames should be given as sampling times.}
+\item{timePoints}{If class(data) == "TreeSummarizedExperiment",
+one of the colData(data) colnames should be given as sampling times.}
 }
 \value{
-A list of matrices with the same number of columns as input and with samples from paired sampling times as rows.
+A list of matrices with the same number of columns as input and
+with samples from paired sampling times as rows.
 }
 \description{
 Generate one or multiple matrices with paired times.

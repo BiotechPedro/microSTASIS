@@ -16,31 +16,40 @@ mSmetadataGroups(
 )
 }
 \arguments{
-\item{metadata}{input data.frame with data corresponding to samples.}
+\item{metadata}{input data.frame with data corresponding to samples. It can
+be the \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::colData()}} from the
+TreeSummarizedExperiment.}
 
-\item{samples}{vector from metadata corresponding to the samples ID, if applicable.}
+\item{samples}{vector from metadata corresponding to the samples ID,
+if applicable.}
 
-\item{individuals}{vector of individuals; first column of the \code{\link[=mSpreviz]{mSpreviz()}} output.}
+\item{individuals}{vector of individuals; first column of the
+\code{\link[=mSpreviz]{mSpreviz()}} output.}
 
-\item{variable}{name of the column with the variable used for grouping individuals.}
+\item{variable}{column name with the variable used for grouping individuals.}
 
-\item{common}{pattern that separates the ID and the sampling time in rownames, if applicable.}
+\item{common}{pattern that separates the ID and the sampling time in
+rownames, if applicable.}
 
-\item{TreeSummarizedExperiment}{TRUE if colData(data), or colData(altExp(data)), passed as metadata.}
+\item{TreeSummarizedExperiment}{TRUE if colData(data), or
+colData(altExp(data)), passed as metadata.}
 
-\item{ID}{If TreeSummarizedExperiment, one of the colData(data) colnames should be given as individuals.}
+\item{ID}{If TreeSummarizedExperiment, one of the colData(data) colnames
+should be given as individuals.}
 
-\item{timePoints}{If TreeSummarizedExperiment, one of the colData(data) colnames should be given as sampling times.}
+\item{timePoints}{If TreeSummarizedExperiment, one of the colData(data)
+colnames should be given as sampling times.}
 }
 \value{
-A vector with the same length as the number of rows in the \code{\link[=mSpreviz]{mSpreviz()}} output.
+A vector with the same length as the number of rows in the
+\code{\link[=mSpreviz]{mSpreviz()}} output.
 }
 \description{
 Easily extract groups of individuals from sample metadata.
 }
 \examples{
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+mS <- iterativeClustering(pairedTimes = times, common = "_")
 results <- mSpreviz(results = mS, times = times)
 metadata <- data.frame(Sample = rownames(clr), age = c(rep("youth", 65), 
                        rep("old", 131-65)))

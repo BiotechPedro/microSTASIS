@@ -7,28 +7,35 @@
 mSlinesCV(pairedTime, CVklist, k = 1L, points = TRUE, sizeLine = 0.5)
 }
 \arguments{
-\item{pairedTime}{input matrix with paired times whose stability has being assessed.}
+\item{pairedTime}{input matrix with paired times whose stability
+has being assessed. One of the lists output of
+\code{\link[=pairedTimes]{pairedTimes()}}.}
 
 \item{CVklist}{list resulting from \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 
-\item{k}{integer; number of individuals to subset from the data. The same as used in \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
+\item{k}{integer; number of individuals to subset from the data.
+The same as used in \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 
-\item{points}{logical; if plotting, FALSE to only plot lines and TRUE to add points on the mS score, i.e. result from \code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
+\item{points}{logical; if plotting, FALSE to only plot lines and TRUE to
+add points on the mS score, i.e. result from
+\code{\link[=iterativeClusteringCV]{iterativeClusteringCV()}}.}
 
 \item{sizeLine}{numeric; if plotting, size of the multiple lines.}
 }
 \value{
-A line plot in the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object with the values of stability for the multiple subsets and the original matrix of paired samples (points).
+A line plot in the form of a \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} object with the
+values of stability for the multiple subsets and the original matrix
+of paired samples (points).
 }
 \description{
-Plot lines connecting the mS score for each subset of the original matrix of paired times.
+Plot lines connecting the mS score for each subset of the
+original matrix of paired times.
 }
 \examples{
 times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
-mS <- iterativeClustering(pairedTimes = times, parallel = TRUE, common = "_")
+mS <- iterativeClustering(pairedTimes = times, common = "_")
 cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
                                             results = mS, name = "t1_t25",
-                                            common = "_0_", k = 2L, 
-                                            parallel = TRUE)
+                                            common = "_0_", k = 2L)
 mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_t1_t25_k2, k = 2L)
 }
