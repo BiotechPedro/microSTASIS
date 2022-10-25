@@ -9,6 +9,7 @@
 #' @export
 #'
 #' @examples
+#' data(clr)
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' results <- mSpreviz(results = mS, times = times)

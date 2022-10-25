@@ -21,13 +21,14 @@
 #' @export
 #'
 #' @examples
+#' data(clr)
 #' times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
 #'                                             results = mS, name = "t1_t25",
 #'                                             common = "_0_", k = 2L)
-#' mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_t1_t25_k2, k = 2L)
-mSlinesCV <- function (pairedTime, CVklist,  k = 1L, points = TRUE, 
+#' plotmSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_t1_t25_k2, k = 2L)
+plotmSlinesCV <- function (pairedTime, CVklist,  k = 1L, points = TRUE, 
                        sizeLine = 0.5) {
   individuals <- unique(stringr::str_split(rownames(pairedTime), "_0_", 
                                            simplify = TRUE)[,1])

@@ -2,9 +2,8 @@
 #'
 #' @description Perform cross validation of the stability results from 
 #'         [microSTASIS::iterativeClustering()]in the way of leave-one-out (LOO)
-#'         or k-fold (understood as quitting k individuals each time for 
-#'         assessing calculating the metric over individuals/k subsets 
-#'         of the data).
+#'         or leave-k-out (understood as quitting k individuals each time for 
+#'         calculating the metric over individuals).
 #'
 #' @param pairedTimes list of matrices with paired times, 
 #'         i.e. samples to be stressed to multiple iterations.
@@ -22,6 +21,7 @@
 #' @export
 #'
 #' @examples
+#' data(clr)
 #' times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 

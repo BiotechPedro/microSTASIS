@@ -30,6 +30,7 @@ corresponding paired times.
 Perform Hartigan-Wong \code{\link[stats:kmeans]{stats::kmeans()}} algorithm as many times as possible. The values of k are from 2 to the number of samples minus 1. Those individuals whose paired samples are clustered under the same label sum 1. If paired samples are in different clusters, then sum 0, except when the euclidean distance between them is smaller to the ones of each sample to its centroid. This is done for all possible values of k and, finally, divided the sum by k, so obtaining a value between 0 and 1.
 }
 \examples{
+data(clr)
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, common = "_")
 }

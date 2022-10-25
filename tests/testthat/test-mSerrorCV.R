@@ -1,3 +1,4 @@
+data(clr)
 test_that("mSerrorCV return a numeric with the MAE values", {
   expect_type(mSerrorCV(pairedTimes(data = clr, sequential = TRUE, common = "_0_")$t1_t25,
                          iterativeClusteringCV(pairedTimes = pairedTimes(data = clr, sequential = TRUE, common = "_0_"),

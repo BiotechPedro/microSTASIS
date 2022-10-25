@@ -18,12 +18,13 @@
 #' @export
 #'
 #' @examples
+#' data(clr)
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
-#' mSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), 
+#' plotmSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), 
 #'           label = TRUE)
-mSheatmap <- function(results, order = NULL, times, label = FALSE, low = "red2", 
+plotmSheatmap <- function(results, order = NULL, times, label = FALSE, low = "red2", 
                       mid = "yellow", high = "forestgreen", midpoint = 0.5) {
   results <- results[, c(1, which(colnames(results) %in% times))]
   results[, 1] <- factor(results[, 1])

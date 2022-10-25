@@ -1,11 +1,10 @@
 Changes in version 0.99.0 (2022-09-25)
-+ Submitted to Bioconductor
-+ Previously on CRAN. Made the following changes
-    o added support for TreeSumarizedExperiment objects
-    o changed parallelization from future to BiocParallel
-    o merged iterative_clustering() and stabilitas() into iterativeClustering()
-    o added a wrapper for automatic multiple paired time points in pairedTimes() and iterativeClustering()
-    o split CV_results() into mSerrorCV() and mSlinesCV()
-    o added apply loops instead of for and general coding implementations
-    o removed dependencies on other packages
-    o removed pre_radarPC() and radarPC()
++ Submitted to Bioconductor. Previously on CRAN. Made the following changes:
+    + added support for TreeSumarizedExperiment objects
+    + changed parallelization from future to BiocParallel
+    + merged iterative_clustering() and stabilitas() into iterativeClustering()
+    + added a wrapper for automatic multiple paired time points in pairedTimes() and iterativeClustering()
+    + split CV_results() into mSerrorCV() and mSlinesCV()
+    + added apply loops instead of for and general coding implementations
+    + removed dependencies on other packages
+    + removed pre_radarPC() and radarPC()

@@ -47,9 +47,9 @@ bib <- c(
 
 # Introduction
 
-The initial idea behind **µSTASIS** was to warrant the proper processing of high-dimensional, sparse, undetermined, right skewed, overdispersed and compositional data. Specifically, it aims to fill the gap of temporal stability metrics in the compositional analysis of microbiome data. However, it can also work if the data are not transformed for belonging to the [Aitchison simplex](https://en.wikipedia.org/wiki/Compositional_data).
+**µSTASIS**, or microSTASIS, was firstly develop for assessing the stability of microbiota over time. The initial idea behind it was to warrant the proper processing of high-dimensional, sparse, undetermined, right skewed, overdispersed and compositional data. Specifically, it aims to fill the gap of temporal stability metrics in the compositional analysis of microbiome data. However, it can also work if the data are not transformed for belonging to the [Aitchison simplex](https://en.wikipedia.org/wiki/Compositional_data).
 
-On one side, the assumptions in which µSTASIS is based are two: the individual-specific composition and the within-individual variability over time. On the other side, the output, which we called mS score, is easy to interpret and provides a contextualized and intuitive metric to estimate temporal microbiota stability. Also, the package incorporates cross-validation routines (leave-one-out and k-fold), that compute the mean absolute error,  and multiple functions to visualize the result.
+On one side, the assumptions in which µSTASIS is based are two: the individual-specific composition and the within-individual variability over time. On the other side, the output, which we called mS score, is easy to interpret and provides a contextualized and intuitive metric to estimate temporal microbiota stability. Also, the package incorporates leave-p-out (or k) cross-validation routines, that compute the mean absolute error,  and multiple functions to visualize the result.
 
 Therefore, sort of the questions that could be answered are related with robust time-resolved definitions of stability to assess microbiota behaviour against perturbations or to search for specific compositions that present a dynamic equilibrium around a central attractor state rather than overcoming a threshold of no return.
 
@@ -63,7 +63,7 @@ Once we have the paired samples, it is time for the main algorithm: iterative cl
 
 ## Why Bioconductor?
 
-Although the package was initially released at CRAN, we feel that releasing it at Bioconductor could add better experience to the user. Some functions were internally modifyed leveraging on other Bioconductor packages as well as we added interoperability of our workflow with `TreeSummarizedExperiment`.
+Although the package was initially released at CRAN, we feel that releasing it at Bioconductor could add better experience to the user. Some functions were internally modified leveraging on other Bioconductor packages as well as we added interoperability of our workflow with `TreeSummarizedExperiment`.
 
 * `r Biocpkg("microSTASIS")` `r Citep(bib[["microSTASIS"]])`
 
@@ -102,6 +102,7 @@ The input data can be a matrix where the rownames include ID, common pattern and
 
 ```{r "input"}
 ## Show the input data
+data(clr)
 clr[1:8, 1:6]
 ```
 
@@ -170,10 +171,10 @@ There are two main functions for visualizing the results: a scatter plot with bo
 ## Prepare the result for the later visualization functions
 results <- mSpreviz(results = mS, times = times)
 ## Scatter plot of the stability scores per patient and time
-mSscatter(results = results, order = "median", times = c("t1_t25", "t25_t26"), 
+plotmSscatter(results = results, order = "median", times = c("t1_t25", "t25_t26"), 
           gridLines = TRUE, sideScale = 0.2)
 ## Heatmap of the stability scores per patient and time
-mSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), 
+plotmSheatmap(results = results, order = "mean", times = c("t1_t25", "t25_t26"), 
           label = TRUE)
 ```
 
@@ -183,10 +184,10 @@ The interpretation of both visualizations is similar. One the one side we can se
 
 ## Cross-validation
 
-The stability results can be validated by cross validation (CV) in two ways: leave-one-out or k-fold. `k` is the number of individuals removed in each time that `iterativeClustering()` is run internally; it is equal to 1 for the LOOCV.
+The stability results can be validated by cross validation (CV) in two ways: leave-one-out or leave-k-out. `k` is the number of individuals removed in each time that `iterativeClustering()` is run internally; it is equal to 1 for the LOOCV.
 
 ```{r "CV"}
-## Cross validation in a parallelized way with different k-fold values
+## Cross validation in a parallelized way with different k values
 cv_klist_k2 <- BiocParallel::bpmapply(iterativeClusteringCV, name = names(times), 
                                       k = rep(2L, 3), 
                                       MoreArgs = list(pairedTimes = times, 
@@ -202,13 +203,13 @@ MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]],
                         k = 2L)
 ```
 
-Remember that for both `mSerrorCV()` and `mSlinesCV()`, `k` argument has to be the same previously used for extracting the input for `CVklist`. For that, we recommend to save it in another local variable and then use it for the arguments of the different functions.
+Remember that for both `mSerrorCV()` and `plotmSlinesCV()`, `k` argument has to be the same previously used for extracting the input for `CVklist`. For that, we recommend to save it in another local variable and then use it for the arguments of the different functions.
 
 ```{r "error viz"}
 ## Prepare the result for the later visualization functions
 MAE <- mSpreviz(results = list(MAE_t1_t25), times = list(t1_t25 = times$t1_t25))
 ## Heatmap of the mean absolute error values per patient and time
-mSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
+plotmSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
           high = 'red2',  low = 'forestgreen', midpoint = 5)
 ```
 
@@ -217,7 +218,7 @@ The visualizations allows to look at the reliability of the stability metric for
 ```{r "lines"}
 ## Line plot of the stability scores per patient at a given paired times
 ## Both the proper score after iterative clustering and the cross validation ones
-mSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]], k = 2L)
+plotmSlinesCV(pairedTime = times$t1_t25, CVklist = cv_klist_k2[[1]], k = 2L)
 ```
 
 The lines visualizations should be seen as a way to track how the stability score for an individual in a given paired time changes in dependence to the data set i.e. when removing other individuals. Variability is expected, but heavy drops or increases not.
@@ -235,7 +236,7 @@ group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample,
                           common = "_0_", individuals = results$individual, 
                           variable = "age")
 ## Boxplot with individual stability scores split by groups
-mSdynamics(results, groups = group, points = TRUE, linetype = 0)
+plotmSdynamics(results, groups = group, points = TRUE, linetype = 0)
 ```
 
 This plot allow to track general trends of stability in different groups across time.

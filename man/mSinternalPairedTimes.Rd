@@ -22,6 +22,7 @@ samples from paired sampling times as rows.
 Internal function for \code{\link[=pairedTimes]{pairedTimes()}}.
 }
 \examples{
+data(clr)
 t1_t2 <- mSinternalPairedTimes(data = clr, 
                                specifiedTimePoints = c("1", "25"), 
                                common = "_0_")

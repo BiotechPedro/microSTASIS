@@ -37,11 +37,11 @@ Multiple lists with multiple objects of class "kmeans".
 \description{
 Perform cross validation of the stability results from
 \code{\link[=iterativeClustering]{iterativeClustering()}}in the way of leave-one-out (LOO)
-or k-fold (understood as quitting k individuals each time for
-assessing calculating the metric over individuals/k subsets
-of the data).
+or leave-k-out (understood as quitting k individuals each time for
+calculating the metric over individuals).
 }
 \examples{
+data(clr)
 times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, common = "_")
 cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 

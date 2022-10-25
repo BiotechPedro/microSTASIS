@@ -1,3 +1,4 @@
+data(clr)
 test_that("pairedTimes return error when any of specifiedTimePoints doesn't exist", {
   expect_error(pairedTimes(data = clr, sequential = FALSE, common = "_0_",
                            specifiedTimePoints = c("1", "2")))

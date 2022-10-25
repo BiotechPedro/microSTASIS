@@ -21,6 +21,7 @@ Process the \code{\link[=iterativeClustering]{iterativeClustering()}} output to 
 ready for the implemented visualization functions.
 }
 \examples{
+data(clr)
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, common = "_")
 results <- mSpreviz(results = mS, times = times)

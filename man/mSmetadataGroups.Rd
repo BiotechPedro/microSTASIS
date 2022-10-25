@@ -10,7 +10,6 @@ mSmetadataGroups(
   individuals,
   variable,
   common,
-  TreeSummarizedExperiment = FALSE,
   ID,
   timePoints
 )
@@ -21,7 +20,8 @@ be the \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedEx
 TreeSummarizedExperiment.}
 
 \item{samples}{vector from metadata corresponding to the samples ID,
-if applicable.}
+if applicable; should be NULL if ID and timePoints are provided
+from a TreeSummarizedExperiment, for example.}
 
 \item{individuals}{vector of individuals; first column of the
 \code{\link[=mSpreviz]{mSpreviz()}} output.}
@@ -31,14 +31,11 @@ if applicable.}
 \item{common}{pattern that separates the ID and the sampling time in
 rownames, if applicable.}
 
-\item{TreeSummarizedExperiment}{TRUE if colData(data), or
-colData(altExp(data)), passed as metadata.}
+\item{ID}{If applicable, one of the colData() colnames from the
+TreeSummarizedExperiment should be given as individuals.}
 
-\item{ID}{If TreeSummarizedExperiment, one of the colData(data) colnames
-should be given as individuals.}
-
-\item{timePoints}{If TreeSummarizedExperiment, one of the colData(data)
-colnames should be given as sampling times.}
+\item{timePoints}{If applicable, one of the colData() colnames from the
+TreeSummarizedExperiment should be given as sampling times.}
 }
 \value{
 A vector with the same length as the number of rows in the
@@ -48,6 +45,7 @@ A vector with the same length as the number of rows in the
 Easily extract groups of individuals from sample metadata.
 }
 \examples{
+data(clr)
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, common = "_")
 results <- mSpreviz(results = mS, times = times)

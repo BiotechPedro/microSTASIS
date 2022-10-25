@@ -26,6 +26,7 @@ plot lines connecting the stability values for each subset of the
 original matrix of paired times.
 }
 \examples{
+data(clr)
 times <- pairedTimes(data = clr[, 1:20], sequential = TRUE, common = "_0_")
 mS <- iterativeClustering(pairedTimes = times, common = "_")
 cv_klist_t1_t25_k2 <- iterativeClusteringCV(pairedTimes = times, 
@@ -35,6 +36,6 @@ MAE_t1_t25 <- mSerrorCV(pairedTime = times$t1_t25,
                         CVklist = cv_klist_t1_t25_k2,  k = 2L)
 MAE <- mSpreviz(results = list(MAE_t1_t25), 
                 times = list(t1_t25 = times$t1_t25))
-mSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
-          high = 'red2',  low = 'forestgreen', midpoint = 5)
+plotmSheatmap(results = MAE, times = c("t1_t25", "t25_t26"), label = TRUE,
+              high = 'red2',  low = 'forestgreen', midpoint = 5)
 }

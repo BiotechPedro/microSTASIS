@@ -14,13 +14,14 @@
 #' @export
 #'
 #' @examples
+#' data(clr)
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
-#' mSscatter(results = results, order = "median", times = c("t1_t25", 
+#' plotmSscatter(results = results, order = "median", times = c("t1_t25", 
 #'                                                          "t25_t26"), 
 #'           gridLines = TRUE, sideScale = 0.2)
-mSscatter <- function(results, order = NULL, times, gridLines = FALSE, 
+plotmSscatter <- function(results, order = NULL, times, gridLines = FALSE, 
                       sideScale = 0.3){
   results <- results[, c(1, which(colnames(results) %in% times))]
   results[, 1] <- factor(results[, 1])

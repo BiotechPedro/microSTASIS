@@ -58,6 +58,7 @@ with samples from paired sampling times as rows.
 Generate one or multiple matrices with paired times.
 }
 \examples{
+data(clr)
 times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 times_b <- pairedTimes(data = clr, sequential = FALSE, common = "_0_", 
                        specifiedTimePoints = c("1", "26"))

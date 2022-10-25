@@ -1,3 +1,4 @@
+data(clr)
 test_that("iterativeClusteringCV return error when dividing individuals by k doesn't result in integer", {
   expect_error(iterativeClusteringCV(pairedTimes = pairedTimes(data = clr, sequential = TRUE, common = "_0_"),
                                      results = iterativeClustering(pairedTimes = pairedTimes(data = clr, sequential = TRUE, common = "_0_"),

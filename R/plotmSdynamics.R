@@ -15,6 +15,7 @@
 #' @export
 #'
 #' @examples
+#' data(clr)
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' mS <- iterativeClustering(pairedTimes = times, common = "_")
 #' results <- mSpreviz(results = mS, times = times)
@@ -23,8 +24,8 @@
 #' group <- mSmetadataGroups(metadata = metadata, samples = metadata$Sample, 
 #'                           common = "_0_", individuals = results$individual, 
 #'                           variable = "age")
-#' mSdynamics(results, groups = group, points = TRUE, linetype = 0)
-mSdynamics <- function(results, groups, points = TRUE, linetype = 2){
+#' plotmSdynamics(results, groups = group, points = TRUE, linetype = 0)
+plotmSdynamics <- function(results, groups, points = TRUE, linetype = 2){
     results$group <- groups
     manual.melt <- data.frame(individual = rep(results[, 1], 
                                                length(colnames(results)) - 2),

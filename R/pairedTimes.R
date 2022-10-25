@@ -26,6 +26,7 @@
 #' @rdname pairedTimes-methods
 #'
 #' @examples
+#' data(clr)
 #' times <- pairedTimes(data = clr, sequential = TRUE, common = "_0_")
 #' times_b <- pairedTimes(data = clr, sequential = FALSE, common = "_0_", 
 #'                        specifiedTimePoints = c("1", "26"))

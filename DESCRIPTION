@@ -46,7 +46,7 @@ biocViews: GeneticVariability, BiomedicalInformatics, Clustering,
 BugReports: https://github.com/BiotechPedro/microSTASIS
 URL: https://doi.org/10.1093/bib/bbac055
 Encoding: UTF-8
-LazyData: true
+LazyData: FALSE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 VignetteBuilder: knitr
