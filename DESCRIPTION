@@ -1,7 +1,7 @@
 Package: microSTASIS
 Title: Microbiota STability ASsessment via Iterative cluStering
 Version: 0.99.1
-Description: The toolkit 'µSTASIS' has been developed for the stability analysis
+Description: The toolkit 'µSTASIS', or microSTASIS, has been developed for the stability analysis
             of microbiota in a temporal framework by leveraging on iterative 
             clustering. Concretely, the core function uses Hartigan-Wong k-means
             algorithm as many times as possible for stressing out paired samples
